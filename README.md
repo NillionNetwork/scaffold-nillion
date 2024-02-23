@@ -1,11 +1,10 @@
-# 🏗 Scaffold-ETH 2
+# 🏗 Scaffold-ETH 2 with Nillion
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+This template has all the power of Scaffold-ETH 2 with a Nillion integration
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+## About Scaffold-ETH 2
+
+🧪 [Scaffold-ETH 2](https://docs.scaffoldeth.io) is an open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
 
 ⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
 
@@ -25,6 +24,14 @@ Before you begin, you need to install the following tools:
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
 - [Git](https://git-scm.com/downloads)
 
+Before using Nillion, you need to store your user key in MetaMask Snaps
+
+1. Install the [MetaMask Flask browser extension](https://docs.metamask.io/snaps/get-started/install-flask/) that will let you work with experimental snaps
+
+2. [Visit the Nillion Key Management UI](https://github.com/nillion-oss/nillion-snap) to generate a user key and store it in Snaps
+
+3. Run through this quickstart and "Connect to Snap" from the UI
+
 ## Quickstart
 
 To get started with Scaffold-ETH 2, follow the steps below:
@@ -32,9 +39,17 @@ To get started with Scaffold-ETH 2, follow the steps below:
 1. Clone this repo & install dependencies
 
 ```
-git clone https://github.com/scaffold-eth/scaffold-eth-2.git
-cd scaffold-eth-2
+git clone https://github.com/nillion-oss/scaffold-eth-with-nillion.git
+cd scaffold-eth-with-nillion
 yarn install
+```
+
+Download the [Nillion Javascript Client](https://docs.nillion.com/quickstart#download-binaries) to a local folder
+
+Install the Nillion Javascript client as an additional dependency
+
+```bash
+yarn add {path-to-nillion-js-client-folder}
 ```
 
 2. Run a local network in the first terminal:
@@ -67,14 +82,7 @@ Run smart contract test with `yarn hardhat:test`
 - Edit your frontend in `packages/nextjs/pages`
 - Edit your deployment scripts in `packages/hardhat/deploy`
 
-## Documentation
+5. Connect to Nillion
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
-
-To know more about its features, check out our [website](https://scaffoldeth.io).
-
-## Contributing to Scaffold-ETH 2
-
-We welcome contributions to Scaffold-ETH 2!
-
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+- Visit the Nillion page on: `http://localhost:3000/nillion`
+- Edit the Nillion page code in `packages/nextjs/app/nillion`
