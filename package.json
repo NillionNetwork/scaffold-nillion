@@ -4,6 +4,7 @@
   "private": true,
   "workspaces": {
     "packages": [
+      "packages/backend",
       "packages/hardhat",
       "packages/nextjs",
       "packages/nillion"

@@ -1,0 +1,7 @@
+Flask[async]==3.0.2
+Flask-Cors==4.0.0
+serverless-wsgi==3.0.3
+waterbear==2.6.6
+web3==6.15.1
+py-nillion-client==0.0.9
+nada-dsl==0.0.9

@@ -1,0 +1,8 @@
+{
+  "name": "backend",
+  "packageManager": "yarn@3.2.3",
+  "devDependencies": {
+    "@types/serverless": "^3",
+    "serverless": "^3.38.0"
+  }
+}

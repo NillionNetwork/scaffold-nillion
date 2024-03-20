@@ -1,0 +1,32 @@
+{
+  "cluster_id": "f592f8ea-7651-4ab8-b692-ef149b783dc9",
+  "payments_config": {
+    "rpc_endpoint": "https://rpc-endpoint.testnet-fe.nilogy.xyz",
+    "signer": {
+      "wallet": {
+        "chain_id": 22255222,
+        "private_key": "a3c4332e3fa1432d658183e60f55b614d21235678e792e71c2038eb295b892f6"
+      }
+    },
+    "smart_contract_addresses": {
+      "blinding_factors_manager": "0xa841c8814aae50790f79b5bfa6c5ecd25071655e",
+      "payments": "0x27303ed96fdf3986413c2e0879f7b1a9b17ee7f5"
+    }
+  },
+  "bootnodes_ws": [
+    "/dns/node-1.testnet-fe.nillion-network.nilogy.xyz/tcp/14211/wss/p2p/12D3KooWNbB2dobuVpH5qetmWnamsKr1G9rC5Sbvj2UsMt3jvQxK"
+  ],
+  "bootnodes": [
+    "/dns/node-1.testnet-fe.nillion-network.nilogy.xyz/tcp/14111/p2p/12D3KooWNbB2dobuVpH5qetmWnamsKr1G9rC5Sbvj2UsMt3jvQxK"
+  ],
+  "programs": {
+    "simple_subtraction_public_variables": "HHMgS4vggxGfwULk6CNFL6FCzZ8Xu47fkyyDCyAhV1KpLcXXZ1bvx8FQv2RX48y7SFvnfzN89v93ToH4DJ7Lkvs/simple_subtraction_public_variables",
+    "simple_literals": "HHMgS4vggxGfwULk6CNFL6FCzZ8Xu47fkyyDCyAhV1KpLcXXZ1bvx8FQv2RX48y7SFvnfzN89v93ToH4DJ7Lkvs/simple_literals",
+    "simple_public_variables_only": "HHMgS4vggxGfwULk6CNFL6FCzZ8Xu47fkyyDCyAhV1KpLcXXZ1bvx8FQv2RX48y7SFvnfzN89v93ToH4DJ7Lkvs/simple_public_variables_only",
+    "simple_sub": "HHMgS4vggxGfwULk6CNFL6FCzZ8Xu47fkyyDCyAhV1KpLcXXZ1bvx8FQv2RX48y7SFvnfzN89v93ToH4DJ7Lkvs/simple_sub",
+    "basic": "HHMgS4vggxGfwULk6CNFL6FCzZ8Xu47fkyyDCyAhV1KpLcXXZ1bvx8FQv2RX48y7SFvnfzN89v93ToH4DJ7Lkvs/basic",
+    "simple_public_variables": "HHMgS4vggxGfwULk6CNFL6FCzZ8Xu47fkyyDCyAhV1KpLcXXZ1bvx8FQv2RX48y7SFvnfzN89v93ToH4DJ7Lkvs/simple_public_variables",
+    "simple_mult": "HHMgS4vggxGfwULk6CNFL6FCzZ8Xu47fkyyDCyAhV1KpLcXXZ1bvx8FQv2RX48y7SFvnfzN89v93ToH4DJ7Lkvs/simple_mult",
+    "simple": "HHMgS4vggxGfwULk6CNFL6FCzZ8Xu47fkyyDCyAhV1KpLcXXZ1bvx8FQv2RX48y7SFvnfzN89v93ToH4DJ7Lkvs/simple"
+  }
+}

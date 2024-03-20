@@ -1,0 +1,30 @@
+service: serverless-codeparty
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  stage: testnet-fe
+  region: eu-west-1
+  deploymentBucket:
+    name: ${self:service}
+  ecr:
+    scanOnPush: true
+    images:
+      appimage:
+        path: ./
+        buildArgs:
+          NILLION_SDK_ROOT: v2024-03-12-d2d0a82c8
+
+functions:
+  app:
+    environment:
+      NILLION_FAUCET_PK: ${ssm(eu-west-1):/${self:provider.stage}/serverless-codeparty/faucet-pk}
+      NILLION_SERVICE_PK: ${ssm(eu-west-1):/${self:provider.stage}/serverless-codeparty/service-pk}
+      NILLION_NODE_SEED: "test-seed-0"
+
+    image:
+      name: appimage
+    timeout: 30
+    events:
+      - http: ANY /
+      - http: 'ANY /{proxy+}'
