@@ -114,7 +114,7 @@ const Home: NextPage = () => {
       <div className="flex items-center flex-col pt-10">
         <div className="px-5 flex flex-col">
           <h1 className="text-xl">
-            <span className="block text-4xl font-bold">Build a Blind Computation App with Nillion</span>
+            <span className="block text-4xl font-bold">Demo: Explore Blind Computation on Nillion</span>
             {!connectedAddress && <p>Connect your MetaMask Flask wallet</p>}
             {connectedAddress && connectedToSnap && !userKey && (
               <a target="_blank" href="https://nillion-snap-site.vercel.app/" rel="noopener noreferrer">

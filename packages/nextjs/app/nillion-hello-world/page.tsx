@@ -22,14 +22,16 @@ const Home: NextPage = () => {
   const [storeId, setStoreId] = useState<string | null>(null);
   const [retrievedValue, setRetrievedValue] = useState<string | null>(null);
 
-  // 🎯 TODO complete this function to connect to the MetaMask Snap
+  // 🎯 TODO #1 complete this function to connect to the MetaMask Snap
+  // Once this is done, the "Connect to Snap with Nillion User Key" button will work
   async function handleConnectToSnap() {
     // call getUserKeyFromSnap
     // update state: set userKey with the response from getUserKeyFromSnap
     // update state: set connectedToSnap based on the response from getUserKeyFromSnap
   }
 
-  // 🎯 TODO complete this useEffect hook to set up Nillion once a userKey exists
+  // 🎯 TODO #2 complete this useEffect hook to set up Nillion once a userKey exists
+  // Once this is done, you can call nillion libraries from the page
   useEffect(() => {
     // conditional execution: Check if userKey exists before implementing logic
     if (userKey) {
@@ -54,7 +56,8 @@ const Home: NextPage = () => {
     }
   }, [userKey]);
 
-  // 🎯 TODO complete this asynchronous function to process the submission of a form used for storing secrets
+  // 🎯 TODO #3 complete this asynchronous function to process the submission of a form used for storing secrets
+  // Once this is done, the form will be hooked up to store your secret blob
   async function handleSecretFormSubmit(secretName: string, secretValue: string) {
     // call storeSecretsBlob, then handle the promise that resolves with a store_id
     // inside of the "then" method, console log the store_id
@@ -62,7 +65,8 @@ const Home: NextPage = () => {
     // update state: set storeId
   }
 
-  // 🎯 TODO complete this asynchronous function to retrieve and read the value of a secret blob
+  // 🎯 TODO #4 complete this asynchronous function to retrieve and read the value of a secret blob
+  // Once this is done, you can retrieve the stored message from Nillion
   async function handleRetrieveSecretBlob(store_id: string, secret_name: string) {
     // call retrieveSecretBlob then handle the promise that resolves with the retrieved value
     // update state: set retrievedValue
@@ -95,12 +99,27 @@ const Home: NextPage = () => {
       <div className="flex items-center flex-col pt-10">
         <div className="px-5 flex flex-col">
           <h1 className="text-xl">
-            <span className="block text-4xl font-bold">Store and Retrieve &quot;Hello World&quot; with Nillion</span>
+            <span className="block text-4xl font-bold text-center">
+              Complete the code 🎯 TODOs to store and retrieve secrets on Nillion
+            </span>
 
-            <p className="block text-m  w-50">
+            <p className="text-center text-lg">
               Complete the &quot;🎯 TODOs &quot; within the code of this page to hook up this page to store and retrieve
-              SecretBlob secrets in Nillion. Need a hint on how to get something working? Take a look at
-              `nillion-hello-world/page-complete.tsx`
+              SecretBlob secrets in Nillion.
+            </p>
+
+            <p className="text-center text-lg">
+              Get started by editing{" "}
+              <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
+                packages/nextjs/nillion-hello-world/page.tsx
+              </code>
+            </p>
+
+            <p>
+              Need a hint on how to get something working? Take a look at the completed{" "}
+              <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
+                packages/nextjs/nillion-hello-world/page-complete.tsx
+              </code>
             </p>
 
             {!connectedAddress && <p>Connect your MetaMask Flask wallet</p>}

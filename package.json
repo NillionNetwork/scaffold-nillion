@@ -37,7 +37,7 @@
     "lint-staged": "^13.0.3"
   },
   "dependencies": {
-    "@nillion/nillion-client-js-browser": "^0.1.18",
+    "@nillion/nillion-client-js-browser": "^0.1.21",
     "react-syntax-highlighter": "^15.5.0"
   }
 }
