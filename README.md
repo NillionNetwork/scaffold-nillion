@@ -28,7 +28,7 @@ Before using Nillion, you need to store your user key in MetaMask Snaps
 
 1. Install the [MetaMask Flask browser extension](https://docs.metamask.io/snaps/get-started/install-flask/) that will let you work with experimental snaps
 
-2. [Visit the Nillion Key Management UI](https://github.com/nillion-oss/nillion-snap) to generate a user key and store it in Snaps
+2. [Visit the Nillion Key Management UI](https://github.com/NillionNetwork/nillion-snap) to generate a user key and store it in Snaps
 
 3. Run through this quickstart and "Connect to Snap" from the UI
 
@@ -39,7 +39,7 @@ To get started with Scaffold-ETH 2, follow the steps below:
 1. Clone this repo & install dependencies
 
 ```
-git clone https://github.com/nillion-oss/scaffold-eth-with-nillion.git
+git clone https://github.com/NillionNetwork/scaffold-eth-with-nillion.git
 cd scaffold-eth-with-nillion
 yarn install
 ```
