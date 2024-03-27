@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -12,28 +11,6 @@ import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
 import { retrieveSecretBlob } from "~~/utils/nillion/retrieveSecretBlob";
 import { storeSecretsBlob } from "~~/utils/nillion/storeSecretsBlob";
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
   const [connectedToSnap, setConnectedToSnap] = useState<boolean>(false);
@@ -45,14 +22,17 @@ const Home: NextPage = () => {
   const [storeId, setStoreId] = useState<string | null>(null);
   const [retrievedValue, setRetrievedValue] = useState<string | null>(null);
 
-  // 🎯 TODO complete this function to connect to the MetaMask Snap
+  // ✅ DONE: complete this function to connect to the MetaMask Snap
   async function handleConnectToSnap() {
     // call getUserKeyFromSnap
+    const snapResponse = await getUserKeyFromSnap();
     // update state: set userKey with the response from getUserKeyFromSnap
+    setUserKey(snapResponse?.user_key || null);
     // update state: set connectedToSnap based on the response from getUserKeyFromSnap
+    setConnectedToSnap(snapResponse?.connectedToSnap || false);
   }
 
-  // 🎯 TODO complete this useEffect hook to set up Nillion once a userKey exists
+  // ✅ DONE: complete this useEffect hook to set up Nillion once a userKey exists
   useEffect(() => {
     // conditional execution: Check if userKey exists before implementing logic
     if (userKey) {
@@ -62,33 +42,44 @@ const Home: NextPage = () => {
         const nillionClientUtil = await import("~~/utils/nillion/nillionClient");
 
         // asyncronously call the getNillionClient function from the imported nillionClient module with the userKey
-
+        const libraries = await nillionClientUtil.getNillionClient(userKey);
         // update state: set nillion
+        setNillion(libraries.nillion);
         // update state: set nillionClient
+        setNillionClient(libraries.nillionClient);
 
         // return nillionClient
+        return libraries.nillionClient;
       };
 
       // call getNillionClientLibrary, then use the returned nillionClient
       getNillionClientLibrary().then(nillionClient => {
         // get the user_id from the instance of nillionClient
+        const user_id = nillionClient.user_id();
         // update state: set user_id
+        setUserId(user_id);
       });
     }
   }, [userKey]);
 
-  // 🎯 TODO complete this asynchronous function to process the submission of a form used for storing secrets
+  // ✅ DONE: complete this asynchronous function to process the submission of a form used for storing secrets
   async function handleSecretFormSubmit(secretName: string, secretValue: string) {
     // call storeSecretsBlob, then handle the promise that resolves with a store_id
-    // inside of the "then" method, console log the store_id
-    // update state: set storedSecretName
-    // update state: set storeId
+    await storeSecretsBlob(nillion, nillionClient, secretValue, secretName).then((store_id: string) => {
+      // inside of the "then" method, console log the store_id
+      console.log("Secret stored at store_id:", store_id);
+      // update state: set storedSecretName
+      setStoredSecretName(secretName);
+      // update state: set storeId
+      setStoreId(store_id);
+    });
   }
 
-  // 🎯 TODO complete this asynchronous function to retrieve and read the value of a secret blob
+  // ✅ DONE: complete this asynchronous function to retrieve and read the value of a secret blob
   async function handleRetrieveSecretBlob(store_id: string, secret_name: string) {
     // call retrieveSecretBlob then handle the promise that resolves with the retrieved value
     // update state: set retrievedValue
+    await retrieveSecretBlob(nillion, nillionClient, store_id, secret_name).then(setRetrievedValue);
   }
 
   // reset nillion values
@@ -119,13 +110,6 @@ const Home: NextPage = () => {
         <div className="px-5 flex flex-col">
           <h1 className="text-xl">
             <span className="block text-4xl font-bold">Store and Retrieve &quot;Hello World&quot; with Nillion</span>
-
-            <p className="block text-m  w-50">
-              Complete the &quot;🎯 TODOs &quot; within the code of this page to hook up this page to store and retrieve
-              SecretBlob secrets in Nillion. Need a hint on how to get something working? Take a look at
-              `nillion-hello-world/page-complete.tsx`
-            </p>
-
             {!connectedAddress && <p>Connect your MetaMask Flask wallet</p>}
             {connectedAddress && connectedToSnap && !userKey && (
               <a target="_blank" href="https://nillion-snap-site.vercel.app/" rel="noopener noreferrer">
