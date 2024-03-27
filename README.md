@@ -1,6 +1,6 @@
 # 🏗 Scaffold-ETH 2 with Nillion
 
-This template has all the power of Scaffold-ETH 2 with a Nillion integration
+This template has all the power of the Scaffold-ETH 2 dapp toolkit with a Nillion integration so that you can store, retrieve, and run blind computation on secrets stored in Nillion.
 
 ## Requirements
 
@@ -14,7 +14,7 @@ Before using Nillion, you need to store your user key in MetaMask Snaps
 
 1. Install the [MetaMask Flask browser extension](https://docs.metamask.io/snaps/get-started/install-flask/) that will let you work with experimental snaps
 
-2. [Visit the Nillion Key Management UI](https://github.com/NillionNetwork/nillion-snap) to generate a user key and store it in Snaps
+2. [Visit the Nillion Key Management UI](https://nillion-snap-site.vercel.app/) to generate a user key and store it in MetaMask Snaps - this saves your user key within MetaMask so it can be used by other Nillion web apps
 
 3. Run through this quickstart and "Connect to Snap" from the UI
 
@@ -51,7 +51,7 @@ Then install the rest of the dependencies
 yarn install
 ```
 
-3. Run a local network in the first terminal:
+3. Run a local ethereum network in the first terminal:
 
 ```
 yarn chain
@@ -59,7 +59,7 @@ yarn chain
 
 This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `hardhat.config.ts`.
 
-4. On a second terminal, deploy the test contract:
+4. On a second terminal, deploy the test ethereum contract:
 
 ```
 yarn deploy
@@ -67,11 +67,11 @@ yarn deploy
 
 This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
 
-5. On a third terminal, run a Nillion local cluster
+5. On a third terminal, run a Nillion local network cluster
 
 Install [Nillion SDK Binaries](https://docs.nillion.com/quickstart#download-binaries) following the [Install binaries guide](https://docs.nillion.com/quickstart#install-the-nillion-sdk) if you don't have Nillion SDK tools installed locally
 
-Then use the nillion [run-local-cluster tool](https://docs.nillion.com/program-simulator) to spin up a local cluster of Nillion nodes. You will run your app against this local cluster
+Then use the nillion [run-local-cluster tool](https://docs.nillion.com/program-simulator) to spin up a local cluster of Nillion nodes. You will run your app against this local cluster.
 
 ```
 ./run-local-cluster
@@ -109,6 +109,8 @@ Use the output values to update all values within your [packages/nextjs/utils/ni
 - update payments to the payments_sc_address value written into the 📝 payments configuration file
 - update chain_id to the chain_id value written into the 📝 payments configuration file
 - update private_key to one of the rotating values written into the 🎁 wallet keys file
+
+Keep the cluster running in this terminal.
 
 6. On a fourth terminal, start your NextJS app:
 
