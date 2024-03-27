@@ -10,7 +10,7 @@ Before you begin, you need to install the following tools:
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
 - [Git](https://git-scm.com/downloads)
 
-Before using Nillion, you need to store your user key in MetaMask Snaps
+To use Scaffold-ETH 2 with Nillion, you need to store your user key in MetaMask Snaps
 
 1. Install the [MetaMask Flask browser extension](https://docs.metamask.io/snaps/get-started/install-flask/) that will let you work with experimental snaps
 
