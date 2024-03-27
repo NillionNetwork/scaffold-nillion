@@ -20,8 +20,12 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/",
   },
   {
-    label: "Nillion",
-    href: "/nillion",
+    label: "Nillion Hello World",
+    href: "/nillion-hello-world",
+  },
+  {
+    label: "Nillion Blind Computation",
+    href: "/nillion-compute",
   },
   {
     label: "Debug Contracts",

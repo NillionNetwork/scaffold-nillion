@@ -49,6 +49,7 @@ Download the [Nillion Javascript Client](https://docs.nillion.com/quickstart#dow
 Install the Nillion Javascript client as an additional dependency
 
 ```bash
+yarn add @nillion/nillion-client-js-browser
 yarn add {path-to-nillion-js-client-folder}
 ```
 
