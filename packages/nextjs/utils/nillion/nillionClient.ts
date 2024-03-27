@@ -31,12 +31,13 @@ export const initializeNillionClient = (
 export const getNillionClient = async (userKey: string) => {
   await nillion.default();
   const nillionUserKey = nillion.UserKey.from_base58(userKey);
-  const nodeKey = nillion.NodeKey.from_seed("scaffold-eth");
+  // temporary fix for an issue where nodekey cannot be reused between calls
+  const nodeKey = nillion.NodeKey.from_seed(`scaffold-eth-${Math.floor(Math.random() * 10000)}`);
   const client = initializeNillionClient(
     nillionUserKey,
     nodeKey,
-    nillionConfig.websockets,
-    nillionConfig.payments_config,
+    nillionConfig.websockets as string[],
+    nillionConfig.payments_config as PaymentsConfig,
   );
   return {
     nillion,

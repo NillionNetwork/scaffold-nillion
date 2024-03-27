@@ -10,6 +10,7 @@ import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
 import { compute } from "~~/utils/nillion/compute";
 import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
+import { retrieveSecretCommand } from "~~/utils/nillion/retrieveSecretCommand";
 import { storeProgram } from "~~/utils/nillion/storeProgram";
 import { storeSecretsInteger } from "~~/utils/nillion/storeSecretsInteger";
 
@@ -202,6 +203,17 @@ const Home: NextPage = () => {
                           <p>
                             ✅ Stored SecretInteger {key} <br />{" "}
                             <CopyString str={storedSecretsNameToStoreId[key] || ""} textBefore={`store_id: `} full />
+                            <br />
+                            <p>
+                              👀 Optional: Copy and run the following command to retrieve-secret from the command line
+                              to see the value of {key} using the nillion SDK tool
+                            </p>
+                            <CopyString
+                              str={retrieveSecretCommand(userKey, storedSecretsNameToStoreId[key], key)}
+                              start={30}
+                              end={30}
+                              code
+                            />
                           </p>
                         ) : (
                           <SecretForm

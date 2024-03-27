@@ -67,50 +67,11 @@ yarn deploy
 
 This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
 
-5. On a third terminal, run a Nillion local network cluster
-
-Install [Nillion SDK Binaries](https://docs.nillion.com/quickstart#download-binaries) following the [Install binaries guide](https://docs.nillion.com/quickstart#install-the-nillion-sdk) if you don't have Nillion SDK tools installed locally
-
-Then use the nillion [run-local-cluster tool](https://docs.nillion.com/program-simulator) to spin up a local cluster of Nillion nodes. You will run your app against this local cluster.
+5. On a third terminal, run a Nillion local network cluster. This bootstraps a Nillion local network of nodes and adds cluster info to your NextJS app .env file
 
 ```
-./run-local-cluster
+yarn run-local-cluster
 ```
-
-After a moment, the tool will log custom cluster information into your command line, for example:
-
-```bash
-# Example run-local-cluster output
-ℹ️ cluster id is 798d89ce-37f4-4d7d-aab9-ba511ae67ccc
-ℹ️ using 256 bit prime
-ℹ️ storing state in /var/folders/1_/2yw8krkx5q5dn2jbhx69s4_r0000gn/T/.tmpfyozMh
-⛓️ starting blockchain node...
-✔️ blockchain node running on endpoint http://localhost:55501
-🏃 starting node 12D3KooWSqDTmdKdJ6AWaVMgUKdLBBVeF6mRo2sLuqbgjjCFEtDK
-⏳ waiting until bootnode is up...
-🏃 starting node 12D3KooWQecC226DfT1q1CiYPxRGiJhrXpeLxV8AtcPZeKYB3wog
-🏃 starting node 12D3KooWQc45ubzkGN6P3qipdUdFEgDTTjYtU3UuBbK7hBzJe5Ng
-🏃 starting node 12D3KooWBXSwSu77B4vp5QQGL5nt959w2HjQDGcgiZKhaQRkd95J
-🏃 starting node 12D3KooWBPfggEeDSSsfHya55oRH9gWgWeeC3yHF2GiQSXeSp91P
-🎁 wallet keys written to /var/folders/1_/2yw8krkx5q5dn2jbhx69s4_r0000gn/T/.tmpfyozMh/private-keys.txt
-📝 payments configuration written to /var/folders/1_/2yw8krkx5q5dn2jbhx69s4_r0000gn/T/.tmpfyozMh/payments-config.yaml
-🥾 bootnode config written to /var/folders/1_/2yw8krkx5q5dn2jbhx69s4_r0000gn/T/.tmpfyozMh/bootnode.yaml
-📝 configuration written to /Users/steph/Library/Application Support/nillion.nil-cli/config.yaml
-✔️ cluster is running, bootnode is at /ip4/127.0.0.1/tcp/55692/p2p/12D3KooWSqDTmdKdJ6AWaVMgUKdLBBVeF6mRo2sLuqbgjjCFEtDK
-🔗 websocket: /ip4/127.0.0.1/tcp/55693/ws/p2p/12D3KooWSqDTmdKdJ6AWaVMgUKdLBBVeF6mRo2sLuqbgjjCFEtDK
-```
-
-Use the output values to update all values within your [packages/nextjs/utils/nillion/nillionConfig.ts](https://github.com/NillionNetwork/scaffold-eth-with-nillion/blob/main/packages/nextjs/utils/nillion/nillionConfig.ts) file. Make the following updates:
-
-- update websockets to be an array containing the output 🔗 websocket
-- update cluster_id to the output ℹ️ cluster id
-- update rpc_endpoint to the blockchain_rpc_endpoint value written into the 📝 payments configuration file
-- update blinding_factors_manager to the blinding_factors_manager_sc_address value written into the 📝 payments configuration file
-- update payments to the payments_sc_address value written into the 📝 payments configuration file
-- update chain_id to the chain_id value written into the 📝 payments configuration file
-- update private_key to one of the rotating values written into the 🎁 wallet keys file
-
-Keep the cluster running in this terminal.
 
 6. On a fourth terminal, start your NextJS app:
 

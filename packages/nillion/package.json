@@ -1,0 +1,16 @@
+{
+  "name": "@se-2/nillion",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "nada": "./nada",
+    "nillion": "./nillion",
+    "nilup": "./nilup",
+    "node-key2peerid": "./node-key2peerid",
+    "node-keygen": "./node-keygen",
+    "program-simulator": "./program-simulator",
+    "pynadac": "./pynadac",
+    "run-local-cluster": "sh ./bootstrap-local-env.sh",
+    "user-keygen": "./user-keygen"
+  }
+}

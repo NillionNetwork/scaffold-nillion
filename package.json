@@ -5,7 +5,8 @@
   "workspaces": {
     "packages": [
       "packages/hardhat",
-      "packages/nextjs"
+      "packages/nextjs",
+      "packages/nillion"
     ]
   },
   "scripts": {
@@ -28,7 +29,9 @@
     "postinstall": "husky install",
     "precommit": "lint-staged",
     "vercel": "yarn workspace @se-2/nextjs vercel",
-    "vercel:yolo": "yarn workspace @se-2/nextjs vercel:yolo"
+    "vercel:yolo": "yarn workspace @se-2/nextjs vercel:yolo",
+    "nillion": "yarn workspace @se-2/nillion nillion",
+    "run-local-cluster": "yarn workspace @se-2/nillion run-local-cluster"
   },
   "packageManager": "yarn@3.2.3",
   "devDependencies": {

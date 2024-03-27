@@ -1,17 +1,20 @@
 export const nillionConfig = {
-  websockets: ["/ip4/127.0.0.1/tcp/55693/ws/p2p/12D3KooWSqDTmdKdJ6AWaVMgUKdLBBVeF6mRo2sLuqbgjjCFEtDK"],
-  cluster_id: "798d89ce-37f4-4d7d-aab9-ba511ae67ccc",
+  websockets: [process.env.NEXT_PUBLIC_NILLION_WEBSOCKETS],
+  cluster_id: process.env.NEXT_PUBLIC_NILLION_CLUSTER_ID,
   payments_config: {
-    rpc_endpoint: "http://localhost:55501",
+    rpc_endpoint: process.env.NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT,
     smart_contract_addresses: {
-      blinding_factors_manager: "a513e6e4b8f2a923d98304ec87f64353c4d5c853",
-      payments: "5fc8d32690cc91d4c39d9d3abcbd16989f875707",
+      blinding_factors_manager: process.env.NEXT_PUBLIC_NILLION_BLINDING_FACTORS_MANAGER_SC_ADDRESS,
+      payments: process.env.NEXT_PUBLIC_NILLION_PAYMENTS_SC_ADDRESS,
     },
     signer: {
       wallet: {
-        chain_id: 31337,
-        private_key: "df57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e",
+        // @ts-ignore
+        chain_id: parseInt(process.env.NEXT_PUBLIC_NILLION_CHAIN_ID || 0),
+        private_key: process.env.NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY,
       },
     },
   },
 };
+
+console.log;

@@ -1969,6 +1969,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@se-2/nillion@workspace:packages/nillion":
+  version: 0.0.0-use.local
+  resolution: "@se-2/nillion@workspace:packages/nillion"
+  languageName: unknown
+  linkType: soft
+
 "@sentry/core@npm:5.30.0":
   version: 5.30.0
   resolution: "@sentry/core@npm:5.30.0"
