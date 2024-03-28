@@ -1,6 +1,6 @@
 # 🏗 Scaffold-Nillion
 
-This template has all the power of the Scaffold-ETH 2 dapp toolkit with a Nillion integration so that you can store, retrieve, and run blind computation on secrets stored in Nillion.
+This template has all the power of the [Scaffold-ETH 2 dapp toolkit](https://github.com/scaffold-eth/scaffold-eth-2) with a Nillion integration so that you can store, retrieve, and run blind computation on secrets stored in Nillion.
 
 ## Requirements
 
