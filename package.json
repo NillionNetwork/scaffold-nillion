@@ -31,7 +31,7 @@
     "vercel": "yarn workspace @se-2/nextjs vercel",
     "vercel:yolo": "yarn workspace @se-2/nextjs vercel:yolo",
     "nillion": "yarn workspace @se-2/nillion nillion",
-    "run-local-cluster": "yarn workspace @se-2/nillion run-local-cluster"
+    "nillion-devnet": "yarn workspace @se-2/nillion nillion-devnet"
   },
   "packageManager": "yarn@3.2.3",
   "devDependencies": {

@@ -25,17 +25,16 @@ Before you begin, you need to install the following tools:
     nillion -V
     ```
 - [Node (>= v18.17)](https://nodejs.org/en/download/)
-     - Check version with
-       ```
-       node -v
-       ```
+  - Check version with
+    ```
+    node -v
+    ```
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
   - Check version with
     ```
     yarn -v
     ```
 - [Git](https://git-scm.com/downloads)
-
 
 To use Scaffold-ETH 2 with Nillion, you need have the MetaMask Flask browser extension installed and to store your Nillion user key in MetaMask Snaps
 
@@ -103,7 +102,7 @@ Run smart contract test with `yarn hardhat:test`
 - Visit the Nillion Hello World page: `http://localhost:3000/nillion-hello-world`
 - Notice that the buttons and functionality for this page are not hooked up yet.
 - Edit the code for this page in `packages/nextjs/app/nillion-hello-world/page.tsx` to complete each of the 🎯 TODOs to get the page working
-- Need a hint on how to get something working? Take a look at the completed `packages/nextjs/nillion-hello-world/page-complete.tsx` page
+- Need a hint on how to get something working? Take a look at the completed `packages/nextjs/app/nillion-hello-world/page-complete.tsx` page
 
 ## About Scaffold-ETH 2
 

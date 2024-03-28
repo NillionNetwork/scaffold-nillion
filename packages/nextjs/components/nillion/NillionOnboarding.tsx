@@ -8,6 +8,7 @@ export const NillionOnboarding = () => {
       <p>To connect with your Nillion user key...</p>
       <ol className="block my-4">
         <li>- Download the MetaMask Flask browser extension to get access to MetaMask Snap</li>
+        <li>- Temporarily disable any other wallet browser extensions - (Classic MetaMask, Rainbow Wallet, etc.)</li>
         <li>
           - Visit{" "}
           <Link href="https://nillion-snap-site.vercel.app" target="_blank" passHref className="link">

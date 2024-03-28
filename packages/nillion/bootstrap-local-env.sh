@@ -1,40 +1,25 @@
 #!/usr/bin/env bash
 
-RUN_LOCAL_CLUSTER="./run-local-cluster"
-USER_KEYGEN="./user-keygen"
-NODE_KEYGEN="./node-keygen"
+NILLION_DEVNET="nillion-devnet"
+NILLION_CLI="nillion"
+NILLION_CLI_COMMAND_USER_KEYGEN="user-key-gen"
+NILLION_CLI_COMMAND_NODE_KEYGEN="node-key-gen"
 
-echo $RUN_LOCAL_CLUSTER
-# kill any other run-local-cluster processes
-pkill -9 -f $RUN_LOCAL_CLUSTER
+echo $NILLION_DEVNET
+# kill any other nillion-devnet processes
+pkill -9 -f $NILLION_DEVNET
 
-for var in RUN_LOCAL_CLUSTER USER_KEYGEN NODE_KEYGEN; do
+for var in NILLION_DEVNET NILLION_CLI; do
   printf "ℹ️ found bin %-18s -> [${!var:?Failed to discover $var}]\n" "$var"
 done
 
 OUTFILE=$(mktemp);
 PIDFILE=$(mktemp);
 
-echo $OUTFILE
-
-# Create node keys
-NODEKEY_FILE_PARTY_1=$(mktemp);
-NODEKEY_FILE_PARTY_2=$(mktemp);
-NODEKEY_FILE_PARTY_3=$(mktemp);
-NODEKEY_FILE_PARTY_4=$(mktemp);
-NODEKEY_FILE_PARTY_5=$(mktemp);
-
-# Crete user keys
-USERKEY_FILE_PARTY_1=$(mktemp);
-USERKEY_FILE_PARTY_2=$(mktemp);
-USERKEY_FILE_PARTY_3=$(mktemp);
-USERKEY_FILE_PARTY_4=$(mktemp);
-USERKEY_FILE_PARTY_5=$(mktemp);
-
-"$RUN_LOCAL_CLUSTER" >"$OUTFILE" & echo $! >"$PIDFILE";
+"$NILLION_DEVNET" >"$OUTFILE" & echo $! >"$PIDFILE";
 ENV_TO_UPDATE=".env ../nextjs/.env"
 echo "--------------------"
-echo "Updating your ${ENV_TO_UPDATE} files with run-local-cluster environment info... This may take a minute."
+echo "Updating your ${ENV_TO_UPDATE} files with nillion-devnet environment info... This may take a minute."
 echo "--------------------"
 time_limit=160
 while true; do
@@ -54,6 +39,7 @@ done
 echo "ℹ️ Cluster has been STARTED (see $OUTFILE)"
 cat "$OUTFILE"
 
+# grep cluster info from nillion-devnet
 CLUSTER_ID=$(grep "cluster id is" "$OUTFILE" | awk '{print $4}');
 WEBSOCKET=$(grep "websocket:" "$OUTFILE" | awk '{print $2}');
 BOOT_MULTIADDR=$(grep "cluster is running, bootnode is at" "$OUTFILE" | awk '{print $7}');
@@ -65,23 +51,7 @@ PAYMENTS_SC_ADDR=$(grep "payments_sc_address:" "$PAYMENTS_CONFIG_FILE" | awk '{p
 PAYMENTS_BF_ADDR=$(grep "blinding_factors_manager_sc_address:" "$PAYMENTS_CONFIG_FILE" | awk '{print $2}');
 WALLET_PRIVATE_KEY=$(tail -n1 "$WALLET_KEYS_FILE")
 
-# Generate multiple node keys
-"$NODE_KEYGEN" "$NODEKEY_FILE_PARTY_1"
-"$NODE_KEYGEN" "$NODEKEY_FILE_PARTY_2"
-"$NODE_KEYGEN" "$NODEKEY_FILE_PARTY_3"
-"$NODE_KEYGEN" "$NODEKEY_FILE_PARTY_4"
-"$NODE_KEYGEN" "$NODEKEY_FILE_PARTY_5"
-
-# Generate multiple user keys
-"$USER_KEYGEN" "$USERKEY_FILE_PARTY_1"
-"$USER_KEYGEN" "$USERKEY_FILE_PARTY_2"
-"$USER_KEYGEN" "$USERKEY_FILE_PARTY_3"
-"$USER_KEYGEN" "$USERKEY_FILE_PARTY_4"
-"$USER_KEYGEN" "$USERKEY_FILE_PARTY_5"
-
-echo "🔑 Node key and user keys have been generated"
-
-# Function to update or add an environment variable 
+# update or add an environment variable to one or more files
 update_env() {
     local key=$1
     local value=$2
@@ -106,6 +76,7 @@ update_env() {
     done
 }
 
+# log file contents of key files to add to .env
 log_file_contents() {
     local file_path=$1  # Direct path to the target file
 
@@ -119,6 +90,30 @@ log_file_contents() {
     cat "$file_path"
 }
 
+# set number of node and user keys being created
+num_node_keys=5
+num_user_keys=5
+
+# Generate node keys and add to .env - ex: NEXT_PUBLIC_NILLION_NODEKEY_PATH_PARTY_1
+for ((i=1; i<=$num_node_keys; i++)); do
+    nodekey_file=$(mktemp)
+    "$NILLION_CLI" "$NILLION_CLI_COMMAND_NODE_KEYGEN" "$nodekey_file"
+    NODEKEY_FILES+=("$nodekey_file")
+    update_env "NEXT_PUBLIC_NILLION_NODEKEY_PATH_PARTY_$i" "$nodekey_file" $ENV_TO_UPDATE
+    update_env "NEXT_PUBLIC_NILLION_NODEKEY_TEXT_PARTY_$i" "$(log_file_contents $nodekey_file)" $ENV_TO_UPDATE
+done
+
+# Generate user keys and add to .env - ex: NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_1
+for ((i=1; i<=$num_user_keys; i++)); do
+    userkey_file=$(mktemp)
+    "$NILLION_CLI" "$NILLION_CLI_COMMAND_USER_KEYGEN" "$userkey_file"
+    USERKEY_FILES+=("$userkey_file")
+    update_env "NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_$i" "$userkey_file" $ENV_TO_UPDATE
+    update_env "NEXT_PUBLIC_NILLION_USERKEY_TEXT_PARTY_$i" "$(log_file_contents $userkey_file)" $ENV_TO_UPDATE
+done
+
+echo "🔑 Node key and user keys have been generated and added to .env"
+
 # Add environment variables to .env
 update_env "NEXT_PUBLIC_NILLION_WEBSOCKETS" "$WEBSOCKET" $ENV_TO_UPDATE
 update_env "NEXT_PUBLIC_NILLION_CLUSTER_ID" "$CLUSTER_ID" $ENV_TO_UPDATE
@@ -129,32 +124,8 @@ update_env "NEXT_PUBLIC_NILLION_CHAIN_ID" "$PAYMENTS_CHAIN" $ENV_TO_UPDATE
 update_env "NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $ENV_TO_UPDATE
 update_env "NEXT_PUBLIC_NILLION_BOOTNODE_MULTIADDRESS" "$BOOT_MULTIADDR" $ENV_TO_UPDATE
 
-# Add user key paths and user keys to .env
-update_env "NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_1" "$USERKEY_FILE_PARTY_1" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_USERKEY_TEXT_PARTY_1" $(log_file_contents $USERKEY_FILE_PARTY_1) $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_2" "$USERKEY_FILE_PARTY_2" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_USERKEY_TEXT_PARTY_2" $(log_file_contents $USERKEY_FILE_PARTY_2) $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_3" "$USERKEY_FILE_PARTY_3" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_USERKEY_TEXT_PARTY_3" $(log_file_contents $USERKEY_FILE_PARTY_3) $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_4" "$USERKEY_FILE_PARTY_4" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_USERKEY_TEXT_PARTY_4" $(log_file_contents $USERKEY_FILE_PARTY_4) $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_5" "$USERKEY_FILE_PARTY_5" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_USERKEY_TEXT_PARTY_5" $(log_file_contents $USERKEY_FILE_PARTY_5) $ENV_TO_UPDATE
-
-# Add node key paths and node keys to .env
-update_env "NEXT_PUBLIC_NILLION_NODEKEY_PATH_PARTY_1" "$NODEKEY_FILE_PARTY_1" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_NODEKEY_TEXT_PARTY_1" $(log_file_contents $NODEKEY_FILE_PARTY_1) $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_NODEKEY_PATH_PARTY_2" "$NODEKEY_FILE_PARTY_2" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_NODEKEY_TEXT_PARTY_2" $(log_file_contents $NODEKEY_FILE_PARTY_2) $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_NODEKEY_PATH_PARTY_3" "$NODEKEY_FILE_PARTY_3" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_NODEKEY_TEXT_PARTY_3" $(log_file_contents $NODEKEY_FILE_PARTY_3) $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_NODEKEY_PATH_PARTY_4" "$NODEKEY_FILE_PARTY_4" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_NODEKEY_TEXT_PARTY_4" $(log_file_contents $NODEKEY_FILE_PARTY_4) $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_NODEKEY_PATH_PARTY_5" "$NODEKEY_FILE_PARTY_5" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_NODEKEY_TEXT_PARTY_5" $(log_file_contents $NODEKEY_FILE_PARTY_5) $ENV_TO_UPDATE
-
 echo "--------------------"
 echo "ℹ️  Updated your $ENV_TO_UPDATE file configurations with variables: websocket, cluster id, keys, blockchain info"
-echo "💻 Your Nillion local cluster is still running - process pid: $(pgrep -f $RUN_LOCAL_CLUSTER)"
+echo "💻 Your Nillion local cluster is still running - process pid: $(pgrep -f $NILLION_DEVNET)"
 
 exit 0

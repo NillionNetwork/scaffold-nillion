@@ -1242,82 +1242,82 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/edr-darwin-arm64@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@nomicfoundation/edr-darwin-arm64@npm:0.3.2"
+"@nomicfoundation/edr-darwin-arm64@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@nomicfoundation/edr-darwin-arm64@npm:0.3.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nomicfoundation/edr-darwin-x64@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@nomicfoundation/edr-darwin-x64@npm:0.3.2"
+"@nomicfoundation/edr-darwin-x64@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@nomicfoundation/edr-darwin-x64@npm:0.3.3"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@nomicfoundation/edr-linux-arm64-gnu@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@nomicfoundation/edr-linux-arm64-gnu@npm:0.3.2"
+"@nomicfoundation/edr-linux-arm64-gnu@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@nomicfoundation/edr-linux-arm64-gnu@npm:0.3.3"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nomicfoundation/edr-linux-arm64-musl@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@nomicfoundation/edr-linux-arm64-musl@npm:0.3.2"
+"@nomicfoundation/edr-linux-arm64-musl@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@nomicfoundation/edr-linux-arm64-musl@npm:0.3.3"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nomicfoundation/edr-linux-x64-gnu@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@nomicfoundation/edr-linux-x64-gnu@npm:0.3.2"
+"@nomicfoundation/edr-linux-x64-gnu@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@nomicfoundation/edr-linux-x64-gnu@npm:0.3.3"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nomicfoundation/edr-linux-x64-musl@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@nomicfoundation/edr-linux-x64-musl@npm:0.3.2"
+"@nomicfoundation/edr-linux-x64-musl@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@nomicfoundation/edr-linux-x64-musl@npm:0.3.3"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nomicfoundation/edr-win32-arm64-msvc@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@nomicfoundation/edr-win32-arm64-msvc@npm:0.3.2"
+"@nomicfoundation/edr-win32-arm64-msvc@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@nomicfoundation/edr-win32-arm64-msvc@npm:0.3.3"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nomicfoundation/edr-win32-ia32-msvc@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@nomicfoundation/edr-win32-ia32-msvc@npm:0.3.2"
+"@nomicfoundation/edr-win32-ia32-msvc@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@nomicfoundation/edr-win32-ia32-msvc@npm:0.3.3"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@nomicfoundation/edr-win32-x64-msvc@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@nomicfoundation/edr-win32-x64-msvc@npm:0.3.2"
+"@nomicfoundation/edr-win32-x64-msvc@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@nomicfoundation/edr-win32-x64-msvc@npm:0.3.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
 "@nomicfoundation/edr@npm:^0.3.1":
-  version: 0.3.2
-  resolution: "@nomicfoundation/edr@npm:0.3.2"
+  version: 0.3.3
+  resolution: "@nomicfoundation/edr@npm:0.3.3"
   dependencies:
-    "@nomicfoundation/edr-darwin-arm64": 0.3.2
-    "@nomicfoundation/edr-darwin-x64": 0.3.2
-    "@nomicfoundation/edr-linux-arm64-gnu": 0.3.2
-    "@nomicfoundation/edr-linux-arm64-musl": 0.3.2
-    "@nomicfoundation/edr-linux-x64-gnu": 0.3.2
-    "@nomicfoundation/edr-linux-x64-musl": 0.3.2
-    "@nomicfoundation/edr-win32-arm64-msvc": 0.3.2
-    "@nomicfoundation/edr-win32-ia32-msvc": 0.3.2
-    "@nomicfoundation/edr-win32-x64-msvc": 0.3.2
+    "@nomicfoundation/edr-darwin-arm64": 0.3.3
+    "@nomicfoundation/edr-darwin-x64": 0.3.3
+    "@nomicfoundation/edr-linux-arm64-gnu": 0.3.3
+    "@nomicfoundation/edr-linux-arm64-musl": 0.3.3
+    "@nomicfoundation/edr-linux-x64-gnu": 0.3.3
+    "@nomicfoundation/edr-linux-x64-musl": 0.3.3
+    "@nomicfoundation/edr-win32-arm64-msvc": 0.3.3
+    "@nomicfoundation/edr-win32-ia32-msvc": 0.3.3
+    "@nomicfoundation/edr-win32-x64-msvc": 0.3.3
   dependenciesMeta:
     "@nomicfoundation/edr-darwin-arm64":
       optional: true
@@ -1337,7 +1337,7 @@ __metadata:
       optional: true
     "@nomicfoundation/edr-win32-x64-msvc":
       optional: true
-  checksum: 92700c041b6f6f21f7c252abc2c90aa4fdd5c7488d22ae9f9407d224774ea5000b6b498363abf760d7f8293609d1aeea9b6b066eeb6c3335d3a01572fcbe04ed
+  checksum: 111feea36510f7c5529b9bdc604bcb80e9f73135d1890e8936bb2a06dd88886a5410689c2bfdcf177b73234ce3f4a162449622a57fedc99bd2f9ae8dd417e5b0
   languageName: node
   linkType: hard
 
@@ -1772,9 +1772,9 @@ __metadata:
   linkType: hard
 
 "@rushstack/eslint-patch@npm:^1.3.3":
-  version: 1.8.0
-  resolution: "@rushstack/eslint-patch@npm:1.8.0"
-  checksum: 25ba5f5dc8828f9a5499045b28d33c642e3db7cd32b3e5f4fbfa5cc6695c28b3967981d662cf37df4e945ba7f874df9bd559c9b2770a1e7d3b5b36afb45246c3
+  version: 1.10.0
+  resolution: "@rushstack/eslint-patch@npm:1.10.0"
+  checksum: 507f462af1b029a4429588c6f5a00409eb29f5a609c64e350029c2a80cefdd6a92d894a72883dab8bdc66773d1551953f5d7781f69396c93e0e48a35c0621f44
   languageName: node
   linkType: hard
 
@@ -2673,12 +2673,12 @@ __metadata:
   linkType: hard
 
 "@types/react@npm:*, @types/react@npm:^18.0.9":
-  version: 18.2.72
-  resolution: "@types/react@npm:18.2.72"
+  version: 18.2.73
+  resolution: "@types/react@npm:18.2.73"
   dependencies:
     "@types/prop-types": "*"
     csstype: ^3.0.2
-  checksum: 694127e704afd3fe1fefe699c6600d1edbb5a81c9862960f40f3d53d4ea625333199671b25b7f13191bc7fa088e15a4342a3de7fa8a5657a24744b65d6ec95f9
+  checksum: 0921d3e3286f11365e796f01eff4fb64de315c68f569e0bbfdaa7680dc4b774c7e8dc416d72d77f7f16a0c2075048429386a55bbfd43ac507d1dddc8d44142e7
   languageName: node
   linkType: hard
 
@@ -5764,9 +5764,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.668":
-  version: 1.4.717
-  resolution: "electron-to-chromium@npm:1.4.717"
-  checksum: 6fe08272b79342170e02699a5d1ba495b0287b906743ca03dca4d4c930ee09fd9b12302c6447bc98ca96973d3aa684e1d930bfaf120774e172c892089138a61e
+  version: 1.4.719
+  resolution: "electron-to-chromium@npm:1.4.719"
+  checksum: 0d5d73dad03e52bba512771c54795d77cc86e107dfaa0e947a54188e63537dd2eef3eb362123606dc6f57a11238997d17dd707b9931ec96ac983377749969521
   languageName: node
   linkType: hard
 
@@ -7556,7 +7556,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:10.3.10, glob@npm:^10.2.2, glob@npm:^10.3.10":
+"glob@npm:10.3.10":
   version: 10.3.10
   resolution: "glob@npm:10.3.10"
   dependencies:
@@ -7609,6 +7609,21 @@ __metadata:
     minimatch: ^5.0.1
     once: ^1.3.0
   checksum: 92fbea3221a7d12075f26f0227abac435de868dd0736a17170663783296d0dd8d3d532a5672b4488a439bf5d7fb85cdd07c11185d6cd39184f0385cbdfb86a47
+  languageName: node
+  linkType: hard
+
+"glob@npm:^10.2.2, glob@npm:^10.3.10":
+  version: 10.3.12
+  resolution: "glob@npm:10.3.12"
+  dependencies:
+    foreground-child: ^3.1.0
+    jackspeak: ^2.3.6
+    minimatch: ^9.0.1
+    minipass: ^7.0.4
+    path-scurry: ^1.10.2
+  bin:
+    glob: dist/esm/bin.mjs
+  checksum: 2b0949d6363021aaa561b108ac317bf5a97271b8a5d7a5fac1a176e40e8068ecdcccc992f8a7e958593d501103ac06d673de92adc1efcbdab45edefe35f8d7c6
   languageName: node
   linkType: hard
 
@@ -8776,7 +8791,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jackspeak@npm:^2.3.5":
+"jackspeak@npm:^2.3.5, jackspeak@npm:^2.3.6":
   version: 2.3.6
   resolution: "jackspeak@npm:2.3.6"
   dependencies:
@@ -8796,7 +8811,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:^1.19.1, jiti@npm:^1.21.0":
+"jiti@npm:^1.21.0":
   version: 1.21.0
   resolution: "jiti@npm:1.21.0"
   bin:
@@ -9327,7 +9342,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^10.0.1, lru-cache@npm:^10.2.0, lru-cache@npm:^9.1.1 || ^10.0.0":
+"lru-cache@npm:^10.0.1, lru-cache@npm:^10.2.0":
   version: 10.2.0
   resolution: "lru-cache@npm:10.2.0"
   checksum: eee7ddda4a7475deac51ac81d7dd78709095c6fa46e8350dc2d22462559a1faa3b81ed931d5464b13d48cbd7e08b46100b6f768c76833912bc444b99c37e25db
@@ -9541,7 +9556,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:9.0.3, minimatch@npm:^9.0.1":
+"minimatch@npm:9.0.3":
   version: 9.0.3
   resolution: "minimatch@npm:9.0.3"
   dependencies:
@@ -9556,6 +9571,15 @@ __metadata:
   dependencies:
     brace-expansion: ^2.0.1
   checksum: 7564208ef81d7065a370f788d337cd80a689e981042cb9a1d0e6580b6c6a8c9279eba80010516e258835a988363f99f54a6f711a315089b8b42694f5da9d0d77
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:^9.0.1":
+  version: 9.0.4
+  resolution: "minimatch@npm:9.0.4"
+  dependencies:
+    brace-expansion: ^2.0.1
+  checksum: cf717f597ec3eed7dabc33153482a2e8d49f4fd3c26e58fd9c71a94c5029a0838728841b93f46bf1263b65a8010e2ee800d0dc9b004ab8ba8b6d1ec07cc115b5
   languageName: node
   linkType: hard
 
@@ -9643,7 +9667,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^5.0.0 || ^6.0.2 || ^7.0.0, minipass@npm:^7.0.2, minipass@npm:^7.0.3":
+"minipass@npm:^5.0.0 || ^6.0.2 || ^7.0.0, minipass@npm:^7.0.2, minipass@npm:^7.0.3, minipass@npm:^7.0.4":
   version: 7.0.4
   resolution: "minipass@npm:7.0.4"
   checksum: 87585e258b9488caf2e7acea242fd7856bbe9a2c84a7807643513a338d66f368c7d518200ad7b70a508664d408aa000517647b2930c259a8b1f9f0984f344a21
@@ -10551,13 +10575,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-scurry@npm:^1.10.1":
-  version: 1.10.1
-  resolution: "path-scurry@npm:1.10.1"
+"path-scurry@npm:^1.10.1, path-scurry@npm:^1.10.2":
+  version: 1.10.2
+  resolution: "path-scurry@npm:1.10.2"
   dependencies:
-    lru-cache: ^9.1.1 || ^10.0.0
+    lru-cache: ^10.2.0
     minipass: ^5.0.0 || ^6.0.2 || ^7.0.0
-  checksum: e2557cff3a8fb8bc07afdd6ab163a92587884f9969b05bbbaf6fe7379348bfb09af9ed292af12ed32398b15fb443e81692047b786d1eeb6d898a51eb17ed7d90
+  checksum: 6739b4290f7d1a949c61c758b481c07ac7d1a841964c68cf5e1fa153d7e18cbde4872b37aadf9c5173c800d627f219c47945859159de36c977dd82419997b9b8
   languageName: node
   linkType: hard
 
@@ -12496,8 +12520,8 @@ __metadata:
   linkType: hard
 
 "tailwindcss@npm:^3.3.3":
-  version: 3.4.1
-  resolution: "tailwindcss@npm:3.4.1"
+  version: 3.4.3
+  resolution: "tailwindcss@npm:3.4.3"
   dependencies:
     "@alloc/quick-lru": ^5.2.0
     arg: ^5.0.2
@@ -12507,7 +12531,7 @@ __metadata:
     fast-glob: ^3.3.0
     glob-parent: ^6.0.2
     is-glob: ^4.0.3
-    jiti: ^1.19.1
+    jiti: ^1.21.0
     lilconfig: ^2.1.0
     micromatch: ^4.0.5
     normalize-path: ^3.0.0
@@ -12524,7 +12548,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: ef5a587dd32bb4e91e1549ead6162f85f0b78d3e6ffd8b4e8eeb15585b7b886cb3af6ae9df5092ed8ccb7e590608d1b3eec79ca08c862b07cd9ff7e72f73104b
+  checksum: 7d181a6aafb520c5760d23d0a199444a324dfa36538edd31934daa253ed9a7ac4bde18c4205aaa89c1269bc2ff11781efda04d2e27ded535a9a2547667a344b1
   languageName: node
   linkType: hard
 
