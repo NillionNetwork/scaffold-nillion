@@ -1,4 +1,4 @@
-# 🏗 Scaffold-ETH 2 with Nillion
+# 🏗 Scaffold-Nillion
 
 This template has all the power of the Scaffold-ETH 2 dapp toolkit with a Nillion integration so that you can store, retrieve, and run blind computation on secrets stored in Nillion.
 
@@ -6,17 +6,44 @@ This template has all the power of the Scaffold-ETH 2 dapp toolkit with a Nillio
 
 Before you begin, you need to install the following tools:
 
+- `nilup`, an installer and version manager for the [Nillion SDK tools](https://docs.nillion.com/nillion-sdk-and-tools). Install nilup:
+  ```
+  curl https://nilup.nilogy.xyz | bash
+  ```
+  - Confirm `nilup` installation
+    ```
+    nilup -V
+    ```
+- [Nillion SDK tools](https://docs.nillion.com/nillion-sdk-and-tools) Use `nilup` to install these:
+  ```bash
+  nilup install latest
+  nilup use latest
+  nilup init
+  ```
+  - Confirm global Nillion tool installation
+    ```
+    nillion -V
+    ```
 - [Node (>= v18.17)](https://nodejs.org/en/download/)
+     - Check version with
+       ```
+       node -v
+       ```
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
+  - Check version with
+    ```
+    yarn -v
+    ```
 - [Git](https://git-scm.com/downloads)
 
-To use Scaffold-ETH 2 with Nillion, you need to store your user key in MetaMask Snaps
 
-1. Install the [MetaMask Flask browser extension](https://docs.metamask.io/snaps/get-started/install-flask/) that will let you work with experimental snaps
+To use Scaffold-ETH 2 with Nillion, you need have the MetaMask Flask browser extension installed and to store your Nillion user key in MetaMask Snaps
 
-2. [Visit the Nillion Key Management UI](https://nillion-snap-site.vercel.app/) to generate a user key and store it in MetaMask Snaps - this saves your user key within MetaMask so it can be used by other Nillion web apps
-
-3. Run through this quickstart and "Connect to Snap" from the UI
+1. Install the [MetaMask Flask browser extension](https://docs.metamask.io/snaps/get-started/install-flask/) that will let you work with experimental snaps.
+2. Create a new test wallet in MetaMask Flask
+3. Temporarily disable any other wallet browser extensions (Classic MetaMask, Rainbow Wallet, etc.) while using MetaMask Flask
+4. [Visit the Nillion Key Management UI](https://nillion-snap-site.vercel.app/) to generate a user key and store it in MetaMask Snaps - this saves your user key within MetaMask so it can be used by other Nillion web apps
+5. This quickstart will ask you to "Connect to Snap" to use your Nillion user key
 
 ## Quickstart
 
@@ -27,27 +54,6 @@ To get started with Scaffold-ETH 2, follow the steps below:
 ```
 git clone https://github.com/NillionNetwork/scaffold-eth-with-nillion.git
 cd scaffold-eth-with-nillion
-```
-
-Installation steps
-
-Complete these temporary install steps to install the private @nillion/nillion-client-js-browser package
-
-Remove the @nillion/nillion-client-js-browser package
-
-```
-yarn remove @nillion/nillion-client-js-browser
-```
-
-Reinstall @nillion/nillion-client-js-browser with your NPM_TOKEN
-
-```
-NPM_TOKEN=your_npm_token npm i @nillion/nillion-client-js-browser
-```
-
-Then install the rest of the dependencies
-
-```bash
 yarn install
 ```
 
@@ -67,10 +73,10 @@ yarn deploy
 
 This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
 
-5. On a third terminal, run a Nillion local network cluster. This bootstraps a Nillion local network of nodes and adds cluster info to your NextJS app .env file
+5. On a third terminal, run the Nillion devnet. This bootstraps Nillion devnet, a local network of nodes and adds cluster info to your NextJS app .env file
 
 ```
-yarn run-local-cluster
+yarn nillion-devnet
 ```
 
 6. On a fourth terminal, start your NextJS app:
