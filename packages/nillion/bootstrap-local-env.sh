@@ -5,7 +5,6 @@ NILLION_CLI="nillion"
 NILLION_CLI_COMMAND_USER_KEYGEN="user-key-gen"
 NILLION_CLI_COMMAND_NODE_KEYGEN="node-key-gen"
 
-echo $NILLION_DEVNET
 # kill any other nillion-devnet processes
 pkill -9 -f $NILLION_DEVNET
 
@@ -124,8 +123,11 @@ update_env "NEXT_PUBLIC_NILLION_CHAIN_ID" "$PAYMENTS_CHAIN" $ENV_TO_UPDATE
 update_env "NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $ENV_TO_UPDATE
 update_env "NEXT_PUBLIC_NILLION_BOOTNODE_MULTIADDRESS" "$BOOT_MULTIADDR" $ENV_TO_UPDATE
 
-echo "--------------------"
-echo "ℹ️  Updated your $ENV_TO_UPDATE file configurations with variables: websocket, cluster id, keys, blockchain info"
-echo "💻 Your Nillion local cluster is still running - process pid: $(pgrep -f $NILLION_DEVNET)"
+echo "Running at process pid: $(pgrep -f $NILLION_DEVNET)"
 
-exit 0
+echo "-------------------------------------------------------"
+echo "-----------🦆 CONNECTED TO NILLION-DEVNET 🦆-----------"
+echo "-------------------------------------------------------"
+
+echo "ℹ️ Your $ENV_TO_UPDATE file configurations were updated with nillion-devnet connection variables: websocket, cluster id, keys, blockchain info"
+echo "💻 The Nillion devnet is still running behind the scenes; to spin down the Nillion devnet at any time, run 'yarn nillion-devnet-stop'"

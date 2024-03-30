@@ -31,7 +31,8 @@
     "vercel": "yarn workspace @se-2/nextjs vercel",
     "vercel:yolo": "yarn workspace @se-2/nextjs vercel:yolo",
     "nillion": "yarn workspace @se-2/nillion nillion",
-    "nillion-devnet": "yarn workspace @se-2/nillion nillion-devnet"
+    "nillion-devnet": "yarn workspace @se-2/nillion nillion-devnet",
+    "nillion-devnet-stop": "yarn workspace @se-2/nillion nillion-devnet-stop"
   },
   "packageManager": "yarn@3.2.3",
   "devDependencies": {
