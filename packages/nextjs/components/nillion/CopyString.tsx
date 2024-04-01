@@ -11,7 +11,7 @@ export const CopyString: React.FC<{
   code?: boolean;
 }> = ({ str, textBefore = "", start = 5, end = 5, full, code }) => {
   return (
-    <p className="flex text-center items-center justify-around">
+    <span className="flex text-center items-center justify-around">
       <span className="flex ">
         {textBefore}
         {code ? (
@@ -28,6 +28,6 @@ export const CopyString: React.FC<{
           />
         </CopyToClipboard>
       </span>
-    </p>
+    </span>
   );
 };

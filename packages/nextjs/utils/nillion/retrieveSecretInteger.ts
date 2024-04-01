@@ -1,7 +1,6 @@
 import { nillionConfig } from "./nillionConfig";
 
 export async function retrieveSecretInteger(
-  nillion: any,
   nillionClient: any,
   store_id: string,
   secret_name: string,

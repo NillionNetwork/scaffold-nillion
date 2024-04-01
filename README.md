@@ -102,7 +102,7 @@ Run smart contract test with `yarn hardhat:test`
 - Visit the Nillion Hello World page: `http://localhost:3000/nillion-hello-world`
 - Notice that the buttons and functionality for this page are not hooked up yet.
 - Edit the code for this page in `packages/nextjs/app/nillion-hello-world/page.tsx` to complete each of the 🎯 TODOs to get the page working
-- Need a hint on how to get something working? Take a look at the completed `packages/nextjs/app/nillion-hello-world/page-complete.tsx` page
+- Need a hint on how to get something working? Take a look at the completed `packages/nextjs/app/nillion-hello-world-complete/page.tsx` page
 
 ## About Scaffold-ETH 2
 

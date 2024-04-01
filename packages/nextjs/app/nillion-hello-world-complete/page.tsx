@@ -5,6 +5,7 @@ import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { CopyString } from "~~/components/nillion/CopyString";
 import { NillionOnboarding } from "~~/components/nillion/NillionOnboarding";
+import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
 import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
@@ -68,14 +69,16 @@ const Home: NextPage = () => {
   // Once this is done, the form will be hooked up to store your secret blob
   async function handleSecretFormSubmit(secretName: string, secretValue: string) {
     // call storeSecretsBlob, then handle the promise that resolves with a store_id
-    await storeSecretsBlob(nillion, nillionClient, secretValue, secretName).then((store_id: string) => {
-      // inside of the "then" method, console log the store_id
-      console.log("Secret stored at store_id:", store_id);
-      // update state: set storedSecretName
-      setStoredSecretName(secretName);
-      // update state: set storeId
-      setStoreId(store_id);
-    });
+    await storeSecretsBlob(nillion, nillionClient, [{ name: secretName, value: secretValue }]).then(
+      (store_id: string) => {
+        // inside of the "then" method, console log the store_id
+        console.log("Secret stored at store_id:", store_id);
+        // update state: set storedSecretName
+        setStoredSecretName(secretName);
+        // update state: set storeId
+        setStoreId(store_id);
+      },
+    );
   }
 
   // ✅ #4 DONE: complete this asynchronous function to retrieve and read the value of a secret blob
@@ -83,7 +86,7 @@ const Home: NextPage = () => {
   async function handleRetrieveSecretBlob(store_id: string, secret_name: string) {
     // call retrieveSecretBlob then handle the promise that resolves with the retrieved value
     // update state: set retrievedValue
-    await retrieveSecretBlob(nillion, nillionClient, store_id, secret_name).then(setRetrievedValue);
+    await retrieveSecretBlob(nillionClient, store_id, secret_name).then(setRetrievedValue);
   }
 
   // reset nillion values
@@ -114,25 +117,18 @@ const Home: NextPage = () => {
         <div className="px-5 flex flex-col">
           <h1 className="text-xl">
             <span className="block text-4xl font-bold text-center">
-              Store and Retrieve &quot;Hello World&quot; with Nillion - Completed verion!
+              Store and Retrieve &quot;Hello World&quot; with Nillion: ✅ Completed verion
             </span>
 
             <p className="text-center text-lg">
-              Complete the &quot;🎯 TODOs &quot; within the code of this page to hook up this page to store and retrieve
-              SecretBlob secrets in Nillion.
+              This is the completed version of hello-world, hooked up to store and retrieve SecretBlob secrets in
+              Nillion.
             </p>
 
             <p className="text-center text-lg">
-              Get started by editing{" "}
+              Check out this completed code in{" "}
               <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-                packages/nextjs/app/nillion-hello-world/page.tsx
-              </code>
-            </p>
-
-            <p>
-              Need a hint on how to get something working? Take a look at the completed{" "}
-              <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-                packages/nextjs/app/nillion-hello-world/page-complete.tsx
+                packages/nextjs/app/nillion-hello-world-complete/page.tsx
               </code>
             </p>
 
@@ -199,13 +195,17 @@ const Home: NextPage = () => {
                   <div className="flex flex-row w-full justify-between items-center my-10 mx-10">
                     <div className="flex-1 px-2">
                       {!!storeId ? (
-                        <p>
-                          ✅ Stored SecretBlob {storedSecretName} <br />{" "}
-                          <CopyString str={storeId || ""} textBefore={`store_id: `} full />
+                        <>
+                          <RetrieveSecretCommand
+                            secretType="SecretBlob"
+                            userKey={userKey}
+                            storeId={storeId}
+                            secretName={storedSecretName}
+                          />
                           <button className="btn btn-sm btn-primary mt-4" onClick={resetForm}>
                             Reset
                           </button>
-                        </p>
+                        </>
                       ) : (
                         <SecretForm
                           secretName={storedSecretName}

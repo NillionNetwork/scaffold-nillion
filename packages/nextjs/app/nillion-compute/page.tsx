@@ -6,6 +6,7 @@ import { useAccount } from "wagmi";
 import CodeSnippet from "~~/components/nillion/CodeSnippet";
 import { CopyString } from "~~/components/nillion/CopyString";
 import { NillionOnboarding } from "~~/components/nillion/NillionOnboarding";
+import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
 import { compute } from "~~/utils/nillion/compute";
@@ -204,22 +205,13 @@ const Home: NextPage = () => {
                   <div className="flex flex-row w-full justify-between items-center my-10 mx-10">
                     {Object.keys(storedSecretsNameToStoreId).map(key => (
                       <div className="flex-1 px-2" key={key}>
-                        {!!storedSecretsNameToStoreId[key] ? (
-                          <span>
-                            ✅ Stored SecretInteger {key} <br />{" "}
-                            <CopyString str={storedSecretsNameToStoreId[key] || ""} textBefore={`store_id: `} full />
-                            <br />
-                            <p>
-                              👀 Optional: Copy and run the following command to retrieve-secret from the command line
-                              to see the value of {key} using the nillion SDK tool
-                            </p>
-                            <CopyString
-                              str={retrieveSecretCommand(userKey, storedSecretsNameToStoreId[key], key)}
-                              start={30}
-                              end={30}
-                              code
-                            />
-                          </span>
+                        {!!storedSecretsNameToStoreId[key] && userKey ? (
+                          <RetrieveSecretCommand
+                            secretType="SecretInteger"
+                            userKey={userKey}
+                            storeId={storedSecretsNameToStoreId[key]}
+                            secretName={key}
+                          />
                         ) : (
                           <SecretForm
                             secretName={key}

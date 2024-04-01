@@ -1,23 +1,26 @@
 import { nillionConfig } from "./nillionConfig";
 
-export async function storeSecretsBlob(
-  nillion: any,
-  nillionClient: any,
-  secretValue: string,
-  secretName: string,
-): Promise<string> {
+interface JsInput {
+  name: string;
+  value: string;
+}
+
+export async function storeSecretsBlob(nillion: any, nillionClient: any, secretsToStore: JsInput[]): Promise<string> {
   try {
     // create secrets object
     const secrets = new nillion.Secrets();
 
-    // encode secret blob for storage
-    const encoder = new TextEncoder();
-    const encoded = await nillion.encode_blob_secret(secretName, {
-      bytes: encoder.encode(secretValue),
-    });
+    // iterate through secretsToStore, inserting each into the secrets object
+    for (const secret of secretsToStore) {
+      // encodes secret as a byteArray
+      const byteArraySecret = new TextEncoder().encode(secret.value);
 
-    // insert encoded blob(s) into secrets object
-    await secrets.insert(encoded);
+      // create new SecretBlob with encoded secret
+      const newSecret = nillion.Secret.new_blob(byteArraySecret);
+
+      // insert the secret into secrets object
+      secrets.insert(secret.name, newSecret);
+    }
 
     // store secrets
     const store_id = await nillionClient.store_secrets(nillionConfig.cluster_id, secrets);

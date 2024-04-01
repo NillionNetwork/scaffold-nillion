@@ -5,6 +5,7 @@ import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { CopyString } from "~~/components/nillion/CopyString";
 import { NillionOnboarding } from "~~/components/nillion/NillionOnboarding";
+import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
 import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
@@ -100,7 +101,7 @@ const Home: NextPage = () => {
         <div className="px-5 flex flex-col">
           <h1 className="text-xl">
             <span className="block text-4xl font-bold text-center">
-              Complete the code 🎯 TODOs to store and retrieve secrets on Nillion
+              Store and Retrieve &quot;Hello World&quot; with Nillion: 🎯 TODO version
             </span>
 
             <p className="text-center text-lg">
@@ -115,10 +116,10 @@ const Home: NextPage = () => {
               </code>
             </p>
 
-            <p>
+            <p className="text-center text-lg">
               Need a hint on how to get something working? Take a look at the completed{" "}
               <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-                packages/nextjs/app/nillion-hello-world/page-complete.tsx
+                packages/nextjs/app/nillion-hello-world-complete/page.tsx
               </code>
             </p>
 
@@ -185,13 +186,17 @@ const Home: NextPage = () => {
                   <div className="flex flex-row w-full justify-between items-center my-10 mx-10">
                     <div className="flex-1 px-2">
                       {!!storeId ? (
-                        <p>
-                          ✅ Stored SecretBlob {storedSecretName} <br />{" "}
-                          <CopyString str={storeId || ""} textBefore={`store_id: `} full />
+                        <>
+                          <RetrieveSecretCommand
+                            secretType="SecretBlob"
+                            userKey={userKey}
+                            storeId={storeId}
+                            secretName={storedSecretName}
+                          />
                           <button className="btn btn-sm btn-primary mt-4" onClick={resetForm}>
                             Reset
                           </button>
-                        </p>
+                        </>
                       ) : (
                         <SecretForm
                           secretName={storedSecretName}
