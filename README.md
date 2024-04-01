@@ -8,7 +8,7 @@ Before you begin, you need to install the following tools:
 
 - `nilup`, an installer and version manager for the [Nillion SDK tools](https://docs.nillion.com/nillion-sdk-and-tools). Install nilup:
   ```
-  curl https://nilup.nilogy.xyz | bash
+  curl https://nilup.nilogy.xyz/install.sh | bash
   ```
   - Confirm `nilup` installation
     ```
