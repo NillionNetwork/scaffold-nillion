@@ -26,13 +26,15 @@ export const initializeNillionClient = (
   nodekey: any,
   websockets: string[],
   payments_config: PaymentsConfig,
-): nillion.NillionClient => new nillion.NillionClient(userkey, nodekey, websockets, false, payments_config);
+): nillion.NillionClient => new nillion.NillionClient(userkey, nodekey, websockets, payments_config);
 
 export const getNillionClient = async (userKey: string) => {
   await nillion.default();
   const nillionUserKey = nillion.UserKey.from_base58(userKey);
   // temporary fix for an issue where nodekey cannot be reused between calls
   const nodeKey = nillion.NodeKey.from_seed(`scaffold-eth-${Math.floor(Math.random() * 10000)}`);
+  console.log(nillionConfig);
+
   const client = initializeNillionClient(
     nillionUserKey,
     nodeKey,

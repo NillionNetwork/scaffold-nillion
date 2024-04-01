@@ -35,6 +35,7 @@ const Home: NextPage = () => {
     my_int2: null,
   });
   const [parties] = useState<string[]>(["Party1"]);
+  const [outputs] = useState<string[]>(["my_output"]);
 
   // connect to snap
   async function handleConnectToSnap() {
@@ -89,23 +90,27 @@ const Home: NextPage = () => {
   ) {
     if (programId) {
       const partyName = parties[0];
-      await storeSecretsInteger(nillion, nillionClient, secretValue, secretName, programId, partyName).then(
-        async (store_id: string) => {
-          console.log("Secret stored at store_id:", store_id);
-          setStoredSecretsNameToStoreId(prevSecrets => ({
-            ...prevSecrets,
-            [secretName]: store_id,
-          }));
-        },
-      );
+      await storeSecretsInteger(
+        nillion,
+        nillionClient,
+        [{ name: secretName, value: secretValue }],
+        programId,
+        partyName,
+      ).then(async (store_id: string) => {
+        console.log("Secret stored at store_id:", store_id);
+        setStoredSecretsNameToStoreId(prevSecrets => ({
+          ...prevSecrets,
+          [secretName]: store_id,
+        }));
+      });
     }
   }
 
   // compute on secrets
   async function handleCompute() {
     if (programId) {
-      await compute(nillion, nillionClient, Object.values(storedSecretsNameToStoreId), programId).then(result =>
-        setComputeResult(result),
+      await compute(nillion, nillionClient, Object.values(storedSecretsNameToStoreId), programId, outputs[0]).then(
+        result => setComputeResult(result),
       );
     }
   }
@@ -200,7 +205,7 @@ const Home: NextPage = () => {
                     {Object.keys(storedSecretsNameToStoreId).map(key => (
                       <div className="flex-1 px-2" key={key}>
                         {!!storedSecretsNameToStoreId[key] ? (
-                          <p>
+                          <span>
                             ✅ Stored SecretInteger {key} <br />{" "}
                             <CopyString str={storedSecretsNameToStoreId[key] || ""} textBefore={`store_id: `} full />
                             <br />
@@ -214,7 +219,7 @@ const Home: NextPage = () => {
                               end={30}
                               code
                             />
-                          </p>
+                          </span>
                         ) : (
                           <SecretForm
                             secretName={key}

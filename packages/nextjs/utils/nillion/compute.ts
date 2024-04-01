@@ -1,18 +1,18 @@
 import { nillionConfig } from "./nillionConfig";
 
-const bigIntFromByteArray = (byteArray: Uint8Array) => {
-  let hexString = "0x";
-  for (let i = byteArray.length - 1; i >= 0; i--) {
-    hexString += byteArray[i].toString(16).padStart(2, "0");
-  }
-  return BigInt(hexString);
-};
+interface JsInput {
+  name: string;
+  value: string;
+}
 
 export async function compute(
   nillion: any,
   nillionClient: any,
   store_ids: (string | null)[],
   program_id: string,
+  outputName: string,
+  computeTimeSecrets: JsInput[] = [],
+  publicVariables: JsInput[] = [],
 ): Promise<string> {
   try {
     // create program bindings with the program id
@@ -26,14 +26,25 @@ export async function compute(
 
     console.log(program_bindings);
     console.log(party_id);
-
     console.log(store_ids);
 
-    // all secrets were stored ahead of time, so there
-    // are no compute time secrets used in this computation
-    // compute_time_secrets is an empty object of secrets
+    // create a compute time secrets object
     const compute_time_secrets = new nillion.Secrets();
-    console.log(compute_time_secrets);
+
+    // iterate through computeTimeSecrets, inserting each into the compute_time_secrets object
+    for (const compute_secret of computeTimeSecrets) {
+      const newComputeTimeSecret = nillion.Secret.new_integer(compute_secret.value.toString());
+      compute_time_secrets.insert(compute_secret.name, newComputeTimeSecret);
+    }
+
+    // create a public variables object
+    const public_variables = new nillion.PublicVariables();
+
+    // iterate through computeTimeSecrets, inserting each into the compute_time_secrets object
+    for (const public_variable of publicVariables) {
+      const newPublicVariable = nillion.Secret.new_integer(public_variable.value.toString());
+      compute_time_secrets.insert(public_variable.name, newPublicVariable);
+    }
 
     // compute
     const compute_result_uuid = await nillionClient.compute(
@@ -41,13 +52,12 @@ export async function compute(
       program_bindings,
       store_ids,
       compute_time_secrets,
+      public_variables,
     );
 
     const compute_result = await nillionClient.compute_result(compute_result_uuid);
-
-    // transform bytearray to bigint and get compute result value
-    const decoded_compute_result = bigIntFromByteArray(compute_result.value);
-    return decoded_compute_result.toString();
+    const result = compute_result[outputName].toString();
+    return result;
   } catch (error: any) {
     console.log("error", error);
     return "error";
