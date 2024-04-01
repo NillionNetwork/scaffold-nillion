@@ -7,9 +7,7 @@ export async function retrieveSecretInteger(
 ): Promise<string> {
   try {
     const retrieved = await nillionClient.retrieve_secret(nillionConfig.cluster_id, store_id, secret_name);
-    console.log(retrieved);
-    // TODO - needs decode bigint function
-    return "";
+    return retrieved.to_integer();
   } catch (error: any) {
     return error;
   }

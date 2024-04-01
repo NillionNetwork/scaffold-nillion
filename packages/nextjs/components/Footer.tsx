@@ -53,8 +53,12 @@ export const Footer = () => {
               >
                 Fork Scaffold-Nillion
               </a>
+
+              <a href="https://nillion-snap-site.vercel.app/" target="_blank" rel="noreferrer" className="link ml-5">
+                Generate Nillion User Key
+              </a>
             </div>
-            <span>·</span>
+            <span></span>
           </div>
         </ul>
       </div>

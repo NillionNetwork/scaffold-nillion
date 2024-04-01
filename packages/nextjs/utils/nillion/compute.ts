@@ -24,9 +24,9 @@ export async function compute(
     program_bindings.add_input_party(partyName, party_id);
     program_bindings.add_output_party(partyName, party_id);
 
-    console.log(program_bindings);
-    console.log(party_id);
-    console.log(store_ids);
+    console.log("program_bindings", program_bindings);
+    console.log("party_id", party_id);
+    console.log("store_ids", store_ids);
 
     // create a compute time secrets object
     const compute_time_secrets = new nillion.Secrets();

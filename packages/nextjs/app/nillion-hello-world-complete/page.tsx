@@ -67,18 +67,29 @@ const Home: NextPage = () => {
 
   // ✅ #3 DONE: complete this asynchronous function to process the submission of a form used for storing secrets
   // Once this is done, the form will be hooked up to store your secret blob
-  async function handleSecretFormSubmit(secretName: string, secretValue: string) {
+  async function handleSecretFormSubmit(
+    secretName: string,
+    secretValue: string,
+    permissionedUserIdForRetrieveSecret: string | null,
+    permissionedUserIdForUpdateSecret: string | null,
+    permissionedUserIdForDeleteSecret: string | null,
+  ) {
     // call storeSecretsBlob, then handle the promise that resolves with a store_id
-    await storeSecretsBlob(nillion, nillionClient, [{ name: secretName, value: secretValue }]).then(
-      (store_id: string) => {
-        // inside of the "then" method, console log the store_id
-        console.log("Secret stored at store_id:", store_id);
-        // update state: set storedSecretName
-        setStoredSecretName(secretName);
-        // update state: set storeId
-        setStoreId(store_id);
-      },
-    );
+    await storeSecretsBlob(
+      nillion,
+      nillionClient,
+      [{ name: secretName, value: secretValue }],
+      permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
+      permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
+      permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
+    ).then((store_id: string) => {
+      // inside of the "then" method, console log the store_id
+      console.log("Secret stored at store_id:", store_id);
+      // update state: set storedSecretName
+      setStoredSecretName(secretName);
+      // update state: set storeId
+      setStoreId(store_id);
+    });
   }
 
   // ✅ #4 DONE: complete this asynchronous function to retrieve and read the value of a secret blob
@@ -221,7 +232,7 @@ const Home: NextPage = () => {
                 {/* Retrieve secret blob */}
 
                 <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center w-full rounded-3xl my-2 justify-between mx-5">
-                  <h1 className="text-xl">Retrieve SecretBlob from Nillion</h1>
+                  <h1 className="text-xl">Retrieve and decode SecretBlob from Nillion</h1>
                   <div className="flex flex-row w-full justify-between items-center my-10 mx-10">
                     <div className="flex-1 px-2" key={storedSecretName}>
                       <button
@@ -229,7 +240,7 @@ const Home: NextPage = () => {
                         onClick={() => handleRetrieveSecretBlob(storeId || "", storedSecretName)}
                         disabled={!storeId}
                       >
-                        Retrieve {storedSecretName}
+                        Retrieve and decode {storedSecretName}
                       </button>
 
                       {retrievedValue && <p>✅ Retrieved value: {retrievedValue}</p>}

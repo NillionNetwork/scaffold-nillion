@@ -12,6 +12,7 @@ import { Address } from "~~/components/scaffold-eth";
 import { compute } from "~~/utils/nillion/compute";
 import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
 import { retrieveSecretCommand } from "~~/utils/nillion/retrieveSecretCommand";
+import { retrieveSecretInteger } from "~~/utils/nillion/retrieveSecretInteger";
 import { storeProgram } from "~~/utils/nillion/storeProgram";
 import { storeSecretsInteger } from "~~/utils/nillion/storeSecretsInteger";
 
@@ -48,6 +49,13 @@ const Home: NextPage = () => {
   // store program in the Nillion network and set the resulting program id
   async function handleStoreProgram() {
     await storeProgram(nillionClient, programName).then(setProgramId);
+  }
+
+  async function handleRetrieveInt(secret_name: string, store_id: string | null) {
+    if (store_id) {
+      const value = await retrieveSecretInteger(nillionClient, store_id, secret_name);
+      alert(`${secret_name} is ${value}`);
+    }
   }
 
   // reset nillion values
@@ -87,7 +95,10 @@ const Home: NextPage = () => {
   async function handleSecretFormSubmit(
     secretName: string,
     secretValue: string,
-    // permissionedUserIdForSecret?: string | null,
+    permissionedUserIdForRetrieveSecret: string | null,
+    permissionedUserIdForUpdateSecret: string | null,
+    permissionedUserIdForDeleteSecret: string | null,
+    permissionedUserIdForComputeSecret: string | null,
   ) {
     if (programId) {
       const partyName = parties[0];
@@ -97,6 +108,10 @@ const Home: NextPage = () => {
         [{ name: secretName, value: secretValue }],
         programId,
         partyName,
+        permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
+        permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
+        permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
+        permissionedUserIdForComputeSecret ? [permissionedUserIdForComputeSecret] : [],
       ).then(async (store_id: string) => {
         console.log("Secret stored at store_id:", store_id);
         setStoredSecretsNameToStoreId(prevSecrets => ({
@@ -206,12 +221,20 @@ const Home: NextPage = () => {
                     {Object.keys(storedSecretsNameToStoreId).map(key => (
                       <div className="flex-1 px-2" key={key}>
                         {!!storedSecretsNameToStoreId[key] && userKey ? (
-                          <RetrieveSecretCommand
-                            secretType="SecretInteger"
-                            userKey={userKey}
-                            storeId={storedSecretsNameToStoreId[key]}
-                            secretName={key}
-                          />
+                          <>
+                            <RetrieveSecretCommand
+                              secretType="SecretInteger"
+                              userKey={userKey}
+                              storeId={storedSecretsNameToStoreId[key]}
+                              secretName={key}
+                            />
+                            <button
+                              className="btn btn-sm btn-primary mt-4"
+                              onClick={() => handleRetrieveInt(key, storedSecretsNameToStoreId[key])}
+                            >
+                              👀 Retrieve SecretInteger
+                            </button>
+                          </>
                         ) : (
                           <SecretForm
                             secretName={key}
