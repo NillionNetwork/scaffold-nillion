@@ -7,6 +7,10 @@ This template has all the power of the [Scaffold-ETH 2 dapp toolkit](https://git
 Before you begin, you need to install the following tools:
 
 - `nilup`, an installer and version manager for the [Nillion SDK tools](https://docs.nillion.com/nillion-sdk-and-tools). Install nilup:
+
+  _For the security-conscious, please download the `install.sh` script, so that you can inspect how
+  it works, before piping it to `bash`._
+
   ```
   curl https://nilup.nilogy.xyz/install.sh | bash
   ```
