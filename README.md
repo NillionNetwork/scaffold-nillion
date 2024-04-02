@@ -58,7 +58,7 @@ To use Scaffold-ETH 2 with Nillion, you need have the MetaMask Flask browser ext
 
 To get started with Scaffold-ETH 2, follow the steps below:
 
-1. Clone this repo & install dependencies
+### 1. Clone this repo & install dependencies
 
 ```
 git clone https://github.com/NillionNetwork/scaffold-eth-with-nillion.git
@@ -66,7 +66,7 @@ cd scaffold-eth-with-nillion
 yarn install
 ```
 
-3. Run a local ethereum network in the first terminal:
+### 2. Run a local ethereum network in the first terminal:
 
 ```
 yarn chain
@@ -74,7 +74,7 @@ yarn chain
 
 This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `hardhat.config.ts`.
 
-4. On a second terminal, deploy the test ethereum contract:
+### 3. Open a second terminal and deploy the test ethereum contract:
 
 ```
 yarn deploy
@@ -82,13 +82,17 @@ yarn deploy
 
 This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
 
-5. On a third terminal, run the Nillion devnet. This bootstraps Nillion devnet, a local network of nodes and adds cluster info to your NextJS app .env file
+### 4. Open a third terminal to run the Nillion devnet:
+
+This bootstraps Nillion devnet, a local network of nodes and adds cluster info to your NextJS app .env file
 
 ```
 yarn nillion-devnet
 ```
 
-5a. Optional: If you want to write your own Nada program, open another terminal to create and activate a virtual environment
+### 5. Optional: Nada program setup
+
+If you want to write your own Nada programs, open another terminal to create and activate a python virtual environment
 
 ```
 cd packages/nillion && sh create-venv.sh && source .venv/bin/activate
@@ -182,7 +186,7 @@ cp src/tiny_secret_addition.py ../../nextjs/public/programs
 
 Now the NextJs app has the Nada program and binaries in the `nextjs/public/programs` folder, where the program can be stored using the JavaScript Client.
 
-6. On a fourth terminal, start your NextJS app:
+####6. Open one more terminal to start your NextJS web app:
 
 ```
 yarn start
@@ -196,12 +200,12 @@ Run smart contract test with `yarn hardhat:test`
 - Edit your frontend in `packages/nextjs/pages`
 - Edit your deployment scripts in `packages/hardhat/deploy`
 
-7. Visit the Nillion Blind Computation demo page and try the working demo
+### 7. Visit the Nillion Blind Computation demo page and try the working demo
 
 - Visit the Nillion Blind Computation page to try out Blind Computation: `http://localhost:3000/nillion-compute`
 - Optinally edit the code for this page in `packages/nextjs/app/nillion-compute/page.tsx`
 
-8. Complete the TODOs in the Hello World page to hook up a working Nillion store and retrieve example
+### 8. Complete the TODOs in the Hello World page to hook up a working Nillion store and retrieve example
 
 - Visit the Nillion Hello World page: `http://localhost:3000/nillion-hello-world`
 - Notice that the buttons and functionality for this page are not hooked up yet.
