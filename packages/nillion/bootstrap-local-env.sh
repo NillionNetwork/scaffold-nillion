@@ -126,6 +126,17 @@ update_env "NEXT_PUBLIC_NILLION_BOOTNODE_MULTIADDRESS" "$BOOT_MULTIADDR" $ENV_TO
 echo "Running at process pid: $(pgrep -f $NILLION_DEVNET)"
 
 echo "-------------------------------------------------------"
+echo "                   7MM   7MM                           "
+echo "                    MM    MM                           "
+echo "              db    MM    MM    db                     "
+echo "                    MM    MM                           "
+echo ".7MMpMMMb.   7MM    MM    MM   7MM  ,pW-Wq. 7MMpMMMb.  "
+echo "  MM    MM    MM    MM    MM    MM 6W'    Wb MM    MM  "
+echo "  MM    MM    MM    MM    MM    MM 8M     M8 MM    MM  "
+echo "  MM    MM    MM    MM    MM    MM YA.   ,A9 MM    MM  "
+echo ".JMML  JMML..JMML..JMML..JMML..JMML. Ybmd9 .JMML  JMML."
+echo "-------------------------------------------------------"
+echo "-------------------------------------------------------"
 echo "-----------🦆 CONNECTED TO NILLION-DEVNET 🦆-----------"
 echo "-------------------------------------------------------"
 

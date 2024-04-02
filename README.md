@@ -25,10 +25,20 @@ Before you begin, you need to install the following tools:
     nillion -V
     ```
 - [Node (>= v18.17)](https://nodejs.org/en/download/)
+
   - Check version with
     ```
     node -v
     ```
+
+- [python3](https://www.python.org/downloads/) version 3.11 or higher with a working [pip](https://pip.pypa.io/en/stable/getting-started/) installed
+
+  - Confirm that you have python3 (version >=3.11) and pip installed:
+    ```
+    python3 --version
+    python3 -m pip --version
+    ```
+
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
   - Check version with
     ```
@@ -77,6 +87,100 @@ This command deploys a test smart contract to the local network. The contract is
 ```
 yarn nillion-devnet
 ```
+
+5a. Optional: If you want to write your own Nada program, open another terminal to create and activate a virtual environment
+
+```
+cd packages/nillion && sh create-venv.sh && source .venv/bin/activate
+```
+
+The [nada tool](https://docs.nillion.com/nada) was used to initiate a project inside of packages/nillion/next-project-programs. Create a new Nada program file in next-project-programs/src
+
+```
+cd next-project-programs
+touch src/{your-nada-program-name}.py
+```
+
+For example, if your program is `tiny_secret_addition.py`, run
+
+```
+cd next-project-programs
+touch src/tiny_secret_addition.py
+```
+
+Write your Nada program in the file you just created. Then add the program path, name, and a prime size to your nada-project.toml file
+
+```toml
+[[programs]]
+path = "src/{your-nada-program-name}.py"
+name = "{your-nada-program-name}"
+prime_size = 128
+```
+
+For example, if your program was `tiny_secret_addition.py`, add to nada-project.toml:
+
+```toml
+[[programs]]
+path = "src/tiny_secret_addition.py"
+name = "tiny_secret_addition"
+prime_size = 128
+```
+
+Run the build command to build all programs added to the nada-project.toml file, creating nada.bin files for each Nada program.
+
+```
+nada build
+```
+
+[Generate a test file](https://docs.nillion.com/nada#generate-a-test-file) for your program passing in the test name and program name.
+
+```
+nada generate-test --test-name {your-test-name} {your-nada-program-name}
+```
+
+For example, if your program was `tiny_secret_addition.py`, run
+
+```
+nada generate-test --test-name tiny_secret_addition tiny_secret_addition
+```
+
+Update values in tests/{your-test-name}.yaml and run the test
+
+```
+nada run {your-test-name}
+```
+
+For example, if your test name was `tiny_secret_addition`, run
+
+```
+nada run tiny_secret_addition
+```
+
+Copy program binary file ({your-nada-program-name}.nada.bin) into nextjs public programs folder to use them in the nextjs app.
+
+```
+cp target/{your-nada-program-name}.nada.bin ../../nextjs/public/programs
+```
+
+For example, if your program was `tiny_secret_addition.py`, run
+
+```
+cp target/tiny_secret_addition.nada.bin ../../nextjs/public/programs
+```
+
+Copy the program file ({your-nada-program-name}.py) into nextjs public programs folder
+
+```
+cp src/{your-nada-program-name}.py ../../nextjs/public/programs
+```
+
+For example, if your program was `tiny_secret_addition.py`, run
+
+```
+cp src/tiny_secret_addition.py ../../nextjs/public/programs
+```
+
+Now the NextJs app has the Nada program and binaries in the `nextjs/public/programs` folder, where the program can be stored using the JavaScript Client.
 
 6. On a fourth terminal, start your NextJS app:
 
