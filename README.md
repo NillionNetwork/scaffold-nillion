@@ -190,7 +190,7 @@ cp src/tiny_secret_addition.py ../../nextjs/public/programs
 
 Now the NextJs app has the Nada program and binaries in the `nextjs/public/programs` folder, where the program can be stored using the JavaScript Client.
 
-####6. Open one more terminal to start your NextJS web app:
+### 6. Open one more terminal to start your NextJS web app:
 
 ```
 yarn start
