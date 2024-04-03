@@ -38,7 +38,7 @@ export async function storeSecretsInteger(
     console.log("bindings, party_name:", party_name, "party_id", party_id);
 
     // get user id for user storing the secret
-    const user_id = await nillionClient.user_id;
+    const user_id = nillionClient.user_id;
 
     // create a permissions object, give the storer default permissions, including compute permissions with the program id
     const permissions = nillion.Permissions.default_for_user(user_id, program_id);

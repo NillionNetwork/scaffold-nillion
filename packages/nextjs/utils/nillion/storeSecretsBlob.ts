@@ -33,7 +33,7 @@ export async function storeSecretsBlob(
     const empty_blob_bindings = null;
 
     // get user id for user storing the secret
-    const user_id = await nillionClient.user_id;
+    const user_id = nillionClient.user_id;
 
     // create a permissions object, give the storer default perissions
     const permissions = nillion.Permissions.default_for_user(user_id);
