@@ -15,7 +15,7 @@ done
 OUTFILE=$(mktemp);
 PIDFILE=$(mktemp);
 
-"$NILLION_DEVNET" >"$OUTFILE" & echo $! >"$PIDFILE";
+"$NILLION_DEVNET" --seed scaffold-nillion >"$OUTFILE" & echo $! >"$PIDFILE";
 ENV_TO_UPDATE=".env ../nextjs/.env"
 echo "--------------------"
 echo "Updating your ${ENV_TO_UPDATE} files with nillion-devnet environment info... This may take a minute."

@@ -20,7 +20,7 @@ export async function compute(
 
     // add input and output party details (name and party id) to program bindings
     const partyName = "Party1";
-    const party_id = await nillionClient.party_id();
+    const party_id = nillionClient.party_id;
     program_bindings.add_input_party(partyName, party_id);
     program_bindings.add_output_party(partyName, party_id);
 
