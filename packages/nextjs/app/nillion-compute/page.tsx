@@ -85,7 +85,7 @@ const Home: NextPage = () => {
         return libraries.nillionClient;
       };
       getNillionClientLibrary().then(nillionClient => {
-        const user_id = nillionClient.user_id();
+        const user_id = nillionClient.user_id;
         setUserId(user_id);
       });
     }

@@ -15,7 +15,7 @@ export async function storeProgram(nillionClient: any, programName: string): Pro
     console.log("Stored program - action_id", action_id);
 
     // return the program id
-    const userId = nillionClient.user_id();
+    const userId = nillionClient.user_id;
     const program_id = `${userId}/${programName}`;
     return program_id;
   } catch (error: any) {

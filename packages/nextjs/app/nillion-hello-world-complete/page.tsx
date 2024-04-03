@@ -58,7 +58,7 @@ const Home: NextPage = () => {
       // call getNillionClientLibrary, then use the returned nillionClient
       getNillionClientLibrary().then(nillionClient => {
         // get the user_id from the instance of nillionClient
-        const user_id = nillionClient.user_id();
+        const user_id = nillionClient.user_id;
         // update state: set user_id
         setUserId(user_id);
       });
