@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "nillion": "nillion",
-    "nillion-devnet": "sh ./bootstrap-local-env.sh",
+    "nillion-devnet": "bash ./bootstrap-local-env.sh",
     "nillion-devnet-stop": "pkill -9 -f nillion-devnet"
   }
 }
