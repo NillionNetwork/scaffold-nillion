@@ -182,7 +182,7 @@ const Home: NextPage = () => {
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            {!connectedToSnap ? (
+            {!connectedToSnap || !userId || !nillionClient ? (
               <NillionOnboarding />
             ) : (
               <div className="flex flex-row justify-between">

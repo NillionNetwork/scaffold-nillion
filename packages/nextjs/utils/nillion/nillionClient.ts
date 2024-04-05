@@ -33,7 +33,6 @@ export const getNillionClient = async (userKey: string) => {
   const nillionUserKey = nillion.UserKey.from_base58(userKey);
   // temporary fix for an issue where nodekey cannot be reused between calls
   const nodeKey = nillion.NodeKey.from_seed(`scaffold-eth-${Math.floor(Math.random() * 10000)}`);
-  console.log(nillionConfig);
 
   const client = initializeNillionClient(
     nillionUserKey,

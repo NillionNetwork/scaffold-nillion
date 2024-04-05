@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
+import { parseEther } from "viem";
 import { useAccount } from "wagmi";
 import CodeSnippet from "~~/components/nillion/CodeSnippet";
 import { CopyString } from "~~/components/nillion/CopyString";
@@ -9,9 +10,9 @@ import { NillionOnboarding } from "~~/components/nillion/NillionOnboarding";
 import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
+import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { compute } from "~~/utils/nillion/compute";
 import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
-import { retrieveSecretCommand } from "~~/utils/nillion/retrieveSecretCommand";
 import { retrieveSecretInteger } from "~~/utils/nillion/retrieveSecretInteger";
 import { storeProgram } from "~~/utils/nillion/storeProgram";
 import { storeSecretsInteger } from "~~/utils/nillion/storeSecretsInteger";
@@ -27,7 +28,6 @@ const Home: NextPage = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [nillion, setNillion] = useState<any>(null);
   const [nillionClient, setNillionClient] = useState<any>(null);
-
   const [programName] = useState<string>("addition_simple");
   const [programId, setProgramId] = useState<string | null>(null);
   const [computeResult, setComputeResult] = useState<string | null>(null);
@@ -38,6 +38,23 @@ const Home: NextPage = () => {
   });
   const [parties] = useState<string[]>(["Party1"]);
   const [outputs] = useState<string[]>(["my_output"]);
+
+  const [shouldPostToSmartContract, setShouldPostToSmartContract] = useState(false);
+
+  // optional: set your smart contract name and function name here
+  // this is pointing at setGreeting in YourContract (the base contract from Scaffold-ETH-2)
+  // defined in packages/hardhat/contracts/YourContract.sol
+  // writeContractAsync will write the computeResult to the greeting state variable
+  const { writeAsync: writeContractAsync } = useScaffoldContractWrite({
+    contractName: "YourContract",
+    functionName: "setGreeting",
+    args: ["computeResult"],
+    value: parseEther("0"),
+    blockConfirmations: 1,
+    onBlockConfirmation: txnReceipt => {
+      console.log("Transaction blockHash", txnReceipt.blockHash);
+    },
+  });
 
   // connect to snap
   async function handleConnectToSnap() {
@@ -57,6 +74,10 @@ const Home: NextPage = () => {
       alert(`${secret_name} is ${value}`);
     }
   }
+
+  const handleCheckboxChange = () => {
+    setShouldPostToSmartContract(!shouldPostToSmartContract);
+  };
 
   // reset nillion values
   const resetNillion = () => {
@@ -126,7 +147,12 @@ const Home: NextPage = () => {
   async function handleCompute() {
     if (programId) {
       await compute(nillion, nillionClient, Object.values(storedSecretsNameToStoreId), programId, outputs[0]).then(
-        result => setComputeResult(result),
+        computeResult => {
+          if (shouldPostToSmartContract) {
+            writeContractAsync({ args: [computeResult] });
+          }
+          setComputeResult(computeResult);
+        },
       );
     }
   }
@@ -190,7 +216,7 @@ const Home: NextPage = () => {
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            {!connectedToSnap ? (
+            {!connectedToSnap || !userId || !nillionClient ? (
               <NillionOnboarding />
             ) : (
               <div>
@@ -253,13 +279,19 @@ const Home: NextPage = () => {
                     Step 3: Perform blind computation with stored secrets in the {programName} program
                   </h1>
                   {!computeResult && (
-                    <button
-                      className="btn btn-sm btn-primary mt-4"
-                      onClick={handleCompute}
-                      disabled={Object.values(storedSecretsNameToStoreId).every(v => !v)}
-                    >
-                      Compute on {programName}
-                    </button>
+                    <>
+                      <label>
+                        <input type="checkbox" checked={shouldPostToSmartContract} onChange={handleCheckboxChange} />
+                        Check me to post result onchain to smart contract
+                      </label>
+                      <button
+                        className="btn btn-sm btn-primary mt-4"
+                        onClick={handleCompute}
+                        disabled={Object.values(storedSecretsNameToStoreId).every(v => !v)}
+                      >
+                        Compute on {programName}
+                      </button>
+                    </>
                   )}
                   {computeResult && <p>✅ Compute result: {computeResult}</p>}
                 </div>
