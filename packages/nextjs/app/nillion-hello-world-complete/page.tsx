@@ -128,7 +128,7 @@ const Home: NextPage = () => {
         <div className="px-5 flex flex-col">
           <h1 className="text-xl">
             <span className="block text-4xl font-bold text-center">
-              Store and Retrieve &quot;Hello World&quot; with Nillion: ✅ Completed verion
+              Store and Retrieve &quot;Hello World&quot; with Nillion: ✅ Completed version
             </span>
 
             <p className="text-center text-lg">
