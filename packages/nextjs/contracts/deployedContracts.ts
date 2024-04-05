@@ -6,7 +6,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
-    YourContract: {
+    YourNillionContract: {
       address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       abi: [
         {
@@ -26,13 +26,13 @@ const deployedContracts = {
             {
               indexed: true,
               internalType: "address",
-              name: "greetingSetter",
+              name: "computeResultSetter",
               type: "address",
             },
             {
               indexed: false,
               internalType: "string",
-              name: "newGreeting",
+              name: "newComputeResult",
               type: "string",
             },
             {
@@ -48,12 +48,12 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          name: "GreetingChange",
+          name: "ComputeResultChange",
           type: "event",
         },
         {
           inputs: [],
-          name: "greeting",
+          name: "computeResult",
           outputs: [
             {
               internalType: "string",
@@ -94,11 +94,11 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "string",
-              name: "_newGreeting",
+              name: "_newComputeResult",
               type: "string",
             },
           ],
-          name: "setGreeting",
+          name: "setComputeResult",
           outputs: [],
           stateMutability: "payable",
           type: "function",
@@ -124,7 +124,7 @@ const deployedContracts = {
               type: "address",
             },
           ],
-          name: "userGreetingCounter",
+          name: "userComputeCounter",
           outputs: [
             {
               internalType: "uint256",

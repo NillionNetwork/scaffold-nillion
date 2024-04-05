@@ -42,12 +42,12 @@ const Home: NextPage = () => {
   const [shouldPostToSmartContract, setShouldPostToSmartContract] = useState(false);
 
   // optional: set your smart contract name and function name here
-  // this is pointing at setGreeting in YourContract (the base contract from Scaffold-ETH-2)
-  // defined in packages/hardhat/contracts/YourContract.sol
-  // writeContractAsync will write the computeResult to the greeting state variable
+  // this is pointing at setComputeResult in YourNillionContract (the base contract from Scaffold-ETH-2)
+  // defined in packages/hardhat/contracts/YourNillionContract.sol
+  // writeContractAsync will write the computeResult to the computeResult state variable
   const { writeAsync: writeContractAsync } = useScaffoldContractWrite({
-    contractName: "YourContract",
-    functionName: "setGreeting",
+    contractName: "YourNillionContract",
+    functionName: "setComputeResult",
     args: ["computeResult"],
     value: parseEther("0"),
     blockConfirmations: 1,

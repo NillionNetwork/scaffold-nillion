@@ -10,20 +10,19 @@ import "hardhat/console.sol";
 /**
  * A smart contract that allows changing a state variable of the contract and tracking the changes
  * It also allows the owner to withdraw the Ether in the contract
- * @author BuidlGuidl
  */
-contract YourContract {
+contract YourNillionContract {
 	// State Variables
 	address public immutable owner;
-	string public greeting = "Building Unstoppable Apps!!!";
+	string public computeResult = "";
 	bool public premium = false;
 	uint256 public totalCounter = 0;
-	mapping(address => uint) public userGreetingCounter;
+	mapping(address => uint) public userComputeCounter;
 
 	// Events: a way to emit log statements from smart contract that can be listened to by external parties
-	event GreetingChange(
-		address indexed greetingSetter,
-		string newGreeting,
+	event ComputeResultChange(
+		address indexed computeResultSetter,
+		string newComputeResult,
 		bool premium,
 		uint256 value
 	);
@@ -43,22 +42,22 @@ contract YourContract {
 	}
 
 	/**
-	 * Function that allows anyone to change the state variable "greeting" of the contract and increase the counters
+	 * Function that allows anyone to change the state variable "computeResult" of the contract and increase the counters
 	 *
-	 * @param _newGreeting (string memory) - new greeting to save on the contract
+	 * @param _newComputeResult (string memory) - new computeResult to save on the contract
 	 */
-	function setGreeting(string memory _newGreeting) public payable {
+	function setComputeResult(string memory _newComputeResult) public payable {
 		// Print data to the hardhat chain console. Remove when deploying to a live network.
 		console.log(
-			"Setting new greeting '%s' from %s",
-			_newGreeting,
+			"Setting new computeResult '%s' from %s",
+			_newComputeResult,
 			msg.sender
 		);
 
 		// Change state variables
-		greeting = _newGreeting;
+		computeResult = _newComputeResult;
 		totalCounter += 1;
-		userGreetingCounter[msg.sender] += 1;
+		userComputeCounter[msg.sender] += 1;
 
 		// msg.value: built-in global variable that represents the amount of ether sent with the transaction
 		if (msg.value > 0) {
@@ -68,7 +67,7 @@ contract YourContract {
 		}
 
 		// emit: keyword used to trigger an event
-		emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, 0);
+		emit ComputeResultChange(msg.sender, _newComputeResult, msg.value > 0, 0);
 	}
 
 	/**
