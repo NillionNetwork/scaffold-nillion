@@ -50,7 +50,7 @@ Before you begin, you need to install the following tools:
     ```
 - [Git](https://git-scm.com/downloads)
 
-To use Scaffold-ETH 2 with Nillion, you need have the MetaMask Flask browser extension installed and to store your Nillion user key in MetaMask Snaps
+To use Scaffold-ETH 2 with Nillion, you need to have the MetaMask Flask browser extension installed and to store your Nillion user key in MetaMask Snaps
 
 1. Install the [MetaMask Flask browser extension](https://docs.metamask.io/snaps/get-started/install-flask/) that will let you work with experimental snaps.
 2. Create a new test wallet in MetaMask Flask
