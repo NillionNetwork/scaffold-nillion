@@ -20,15 +20,15 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/",
   },
   {
-    label: "🖥️ Nillion Blind Computation Demo",
+    label: "🖥️ Blind Computation",
     href: "/nillion-compute",
   },
   {
-    label: "🎯 Nillion Hello World",
+    label: "🎯 Hello World",
     href: "/nillion-hello-world",
   },
   {
-    label: "✅ Nillion Hello World Demo",
+    label: "✅ Hello World",
     href: "/nillion-hello-world-complete",
   },
   {
