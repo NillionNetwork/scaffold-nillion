@@ -13,6 +13,9 @@ interface SecretFormProps {
   isDisabled?: boolean;
   isLoading?: boolean;
   secretType: "text" | "number"; // text for SecretBlob, number for SecretInteger
+  customSecretName?: boolean;
+  hidePermissions?: boolean;
+  itemName?: string;
 }
 
 const SecretForm: React.FC<SecretFormProps> = ({
@@ -20,8 +23,12 @@ const SecretForm: React.FC<SecretFormProps> = ({
   secretName,
   isDisabled = false,
   isLoading = false,
-  secretType, // Destructure this prop
+  customSecretName = false,
+  secretType,
+  hidePermissions = false,
+  itemName = "secret",
 }) => {
+  const [secretNameFromForm, setSecretNameFromForm] = useState(secretName);
   const [secret, setSecret] = useState("");
   const [loading, setLoading] = useState(isLoading);
   const [permissionedUserIdForRetrieveSecret, setPermissionedUserIdForRetrieveSecret] = useState("");
@@ -33,7 +40,7 @@ const SecretForm: React.FC<SecretFormProps> = ({
     e.preventDefault();
     setLoading(true);
     onSubmit(
-      secretName,
+      secretNameFromForm,
       secret,
       permissionedUserIdForRetrieveSecret,
       permissionedUserIdForUpdateSecret,
@@ -51,13 +58,31 @@ const SecretForm: React.FC<SecretFormProps> = ({
     "Storing secret..."
   ) : (
     <form onSubmit={handleSubmit} className={isDisabled ? "opacity-50" : ""}>
-      <h1>Store secret: {secretName}</h1>
+      {!customSecretName && <h1>Store secret: {secretName}</h1>}
+      {customSecretName && (
+        <div>
+          <label htmlFor="secret" className="block text-sm font-medium text-gray-700">
+            Set {itemName} name
+          </label>
+          <input
+            id="secret"
+            value={secretNameFromForm}
+            onChange={e => setSecretNameFromForm(e.target.value)}
+            required
+            disabled={isDisabled}
+            className={`mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
+              isDisabled ? "cursor-not-allowed bg-gray-100" : "bg-white"
+            }`}
+          />
+        </div>
+      )}
+
       <div>
         <label htmlFor="secret" className="block text-sm font-medium text-gray-700">
-          Set secret value
+          Set {itemName} value
         </label>
         <input
-          type={secretType} // Use the prop here
+          type={secretType}
           id="secret"
           value={secret}
           onChange={e => setSecret(e.target.value)}
@@ -70,7 +95,7 @@ const SecretForm: React.FC<SecretFormProps> = ({
       </div>
 
       {/* can only compute on secret integers - don't show for SecretBlobs */}
-      {secretType === "number" && (
+      {!hidePermissions && secretType === "number" && (
         <div className="mt-4">
           <label htmlFor="permissionedUserIdForComputeSecret" className="block text-sm font-medium text-gray-700">
             Optional: Set a user id to grant compute permissions to another user
@@ -88,53 +113,59 @@ const SecretForm: React.FC<SecretFormProps> = ({
         </div>
       )}
 
-      <div className="mt-4">
-        <label htmlFor="permissionedUserIdForRetrieveSecret" className="block text-sm font-medium text-gray-700">
-          Optional: Set a user id to grant retrieve permissions to another user
-        </label>
-        <input
-          type="text"
-          id="permissionedUserIdForRetrieveSecret"
-          value={permissionedUserIdForRetrieveSecret}
-          onChange={e => setPermissionedUserIdForRetrieveSecret(e.target.value)}
-          disabled={isDisabled}
-          className={`mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
-            isDisabled ? "cursor-not-allowed bg-gray-100" : "bg-white"
-          }`}
-        />
-      </div>
+      {!hidePermissions && (
+        <div className="mt-4">
+          <label htmlFor="permissionedUserIdForRetrieveSecret" className="block text-sm font-medium text-gray-700">
+            Optional: Set a user id to grant retrieve permissions to another user
+          </label>
+          <input
+            type="text"
+            id="permissionedUserIdForRetrieveSecret"
+            value={permissionedUserIdForRetrieveSecret}
+            onChange={e => setPermissionedUserIdForRetrieveSecret(e.target.value)}
+            disabled={isDisabled}
+            className={`mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
+              isDisabled ? "cursor-not-allowed bg-gray-100" : "bg-white"
+            }`}
+          />
+        </div>
+      )}
 
-      <div className="mt-4">
-        <label htmlFor="permissionedUserIdForUpdateSecret" className="block text-sm font-medium text-gray-700">
-          Optional: Set a user id to grant update permissions to another user
-        </label>
-        <input
-          type="text"
-          id="permissionedUserIdForUpdateSecret"
-          value={permissionedUserIdForUpdateSecret}
-          onChange={e => setPermissionedUserIdForUpdateSecret(e.target.value)}
-          disabled={isDisabled}
-          className={`mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
-            isDisabled ? "cursor-not-allowed bg-gray-100" : "bg-white"
-          }`}
-        />
-      </div>
+      {!hidePermissions && (
+        <div className="mt-4">
+          <label htmlFor="permissionedUserIdForUpdateSecret" className="block text-sm font-medium text-gray-700">
+            Optional: Set a user id to grant update permissions to another user
+          </label>
+          <input
+            type="text"
+            id="permissionedUserIdForUpdateSecret"
+            value={permissionedUserIdForUpdateSecret}
+            onChange={e => setPermissionedUserIdForUpdateSecret(e.target.value)}
+            disabled={isDisabled}
+            className={`mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
+              isDisabled ? "cursor-not-allowed bg-gray-100" : "bg-white"
+            }`}
+          />
+        </div>
+      )}
 
-      <div className="mt-4">
-        <label htmlFor="permissionedUserIdForDeleteSecret" className="block text-sm font-medium text-gray-700">
-          Optional: Set a user id to grant delete permissions to another user
-        </label>
-        <input
-          type="text"
-          id="permissionedUserIdForDeleteSecret"
-          value={permissionedUserIdForDeleteSecret}
-          onChange={e => setPermissionedUserIdForDeleteSecret(e.target.value)}
-          disabled={isDisabled}
-          className={`mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
-            isDisabled ? "cursor-not-allowed bg-gray-100" : "bg-white"
-          }`}
-        />
-      </div>
+      {!hidePermissions && (
+        <div className="mt-4">
+          <label htmlFor="permissionedUserIdForDeleteSecret" className="block text-sm font-medium text-gray-700">
+            Optional: Set a user id to grant delete permissions to another user
+          </label>
+          <input
+            type="text"
+            id="permissionedUserIdForDeleteSecret"
+            value={permissionedUserIdForDeleteSecret}
+            onChange={e => setPermissionedUserIdForDeleteSecret(e.target.value)}
+            disabled={isDisabled}
+            className={`mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
+              isDisabled ? "cursor-not-allowed bg-gray-100" : "bg-white"
+            }`}
+          />
+        </div>
+      )}
 
       <button
         type="submit"

@@ -38,6 +38,19 @@ const Home: NextPage = () => {
               packages/hardhat/contracts
             </code>
           </p>
+
+          <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center rounded-3xl">
+            <span className="block text-2xl font-bold pb-4">Nillion demo apps</span>
+            <Link href="/nillion-pw-manager" passHref className="link">
+              Nillion Password Manager
+            </Link>{" "}
+            <Link href="/nillion-hello-world-complete" passHref className="link">
+              Nillion Hello World
+            </Link>{" "}
+            <Link href="/nillion-compute" passHref className="link">
+              Nillion Blind Compute
+            </Link>{" "}
+          </div>
         </div>
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
