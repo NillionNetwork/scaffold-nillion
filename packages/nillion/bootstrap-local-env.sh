@@ -7,6 +7,7 @@ NILLION_CLI_COMMAND_NODE_KEYGEN="node-key-gen"
 
 # kill any other nillion-devnet processes
 pkill -9 -f $NILLION_DEVNET
+pkill -9 -f anvil
 
 for var in NILLION_DEVNET NILLION_CLI; do
   printf "ℹ️ found bin %-18s -> [${!var:?Failed to discover $var}]\n" "$var"
