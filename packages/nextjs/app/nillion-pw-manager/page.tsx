@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type * as NillionTypes from "@nillion/nillion-client-js-browser/nillion_client_js_browser.d.ts";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { CopyString } from "~~/components/nillion/CopyString";
