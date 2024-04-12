@@ -1,20 +1,14 @@
-# Welcome to Scaffold-ETH 2 Contributing Guide
+# Welcome to Scaffold-Nillion Contributing Guide
 
-Thank you for investing your time in contributing to Scaffold-ETH 2!
+Thank you for investing your time in contributing to Scaffold-Nillion!
 
 This guide aims to provide an overview of the contribution workflow to help us make the contribution process effective for everyone involved.
 
 ## About the Project
 
-Scaffold-ETH 2 is a minimal and forkable repo providing builders with a starter kit to build decentralized applications on Ethereum.
+Scaffold-Nillion is a forkable repo with all the power of the Scaffold-ETH 2 dapp toolkit + a Nillion integration so that you can store, retrieve, and run blind computation on secrets stored in Nillion.
 
 Read the [README](README.md) to get an overview of the project.
-
-### Vision
-
-The goal of Scaffold-ETH 2 is to provide the primary building blocks for a decentralized application.
-
-The repo can be forked to include integrations and more features, but we want to keep the master branch simple and minimal.
 
 ### Project Status
 
@@ -44,7 +38,7 @@ Issues should be used to report problems, request a new feature, or discuss pote
 
 #### Solve an issue
 
-Scan through our [existing issues](https://github.com/scaffold-eth/scaffold-eth-2/issues) to find one that interests you.
+Scan through our [existing issues](https://github.com/NillionNetwork/scaffold-nillion/issues) to find one that interests you.
 
 If a contributor is working on the issue, they will be assigned to the individual. If you find an issue to work on, you are welcome to assign it to yourself and open a PR with a fix for it.
 
@@ -84,3 +78,7 @@ Once you submit your PR:
 - As you update your PR and apply changes, mark each conversation resolved.
 
 Once the PR is approved, we'll "squash-and-merge" to keep the git commit history clean.
+
+The PR will either be
+- merged into main, for bug fixes
+- merged into release, to be merged in with the next release
