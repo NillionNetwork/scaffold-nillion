@@ -14,10 +14,12 @@ Before you begin, you need to install the following tools:
   ```
   curl https://nilup.nilogy.xyz/install.sh | bash
   ```
+
   - Confirm `nilup` installation
     ```
     nilup -V
     ```
+
 - [Nillion SDK tools](https://docs.nillion.com/nillion-sdk-and-tools) Use `nilup` to install these:
   ```bash
   nilup install latest
@@ -215,6 +217,16 @@ Run smart contract test with `yarn hardhat:test`
 - Notice that the buttons and functionality for this page are not hooked up yet.
 - Edit the code for this page in `packages/nextjs/app/nillion-hello-world/page.tsx` to complete each of the 🎯 TODOs to get the page working
 - Need a hint on how to get something working? Take a look at the completed `packages/nextjs/app/nillion-hello-world-complete/page.tsx` page
+
+## Connecting to Nillion Testnet
+
+Today only Nucleus builders have been allowlisted to connect to the Nillion Testnet.
+
+In step 4, `yarn nillion-devnet` sets up the scaffold to run a devnet (a local nillion network).
+
+To instead connect to the Nillion Testnet, replace testnet values from `packages/nextjs/.env.nilliontestnet` with the devnet ones in your `packages/nextjs/.env`. Make sure that your `NEXT_PUBLIC_NILLION_NODEKEY_ALLOWLISTED_SEED` is one you shared with the Nillion team when allowlisting your peer id for the testnet.
+
+Now when you run the NextJS app, your app will connect to the Nillion Testnet.
 
 ## About Scaffold-ETH 2
 

@@ -126,6 +126,10 @@ const config: HardhatUserConfig = {
       url: "https://sepolia.publicgoods.network",
       accounts: [deployerPrivateKey],
     },
+    nillionTestnet: {
+      url: "https://rpc-endpoint.testnet-fe.nilogy.xyz",
+      accounts: [deployerPrivateKey],
+    },
   },
   // configuration for harhdat-verify plugin
   etherscan: {

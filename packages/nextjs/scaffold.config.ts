@@ -1,4 +1,5 @@
 import * as chains from "viem/chains";
+import { defineChain } from "viem/utils";
 
 export type ScaffoldConfig = {
   targetNetworks: readonly chains.Chain[];
@@ -9,9 +10,26 @@ export type ScaffoldConfig = {
   walletAutoConnect: boolean;
 };
 
+const nillionTestnet: chains.Chain = defineChain({
+  id: 22255222,
+  name: "Nillion Testnet",
+  network: "nillion-fe-testnet",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Ether",
+    symbol: "ETH",
+  },
+  rpcUrls: {
+    default: { http: ["https://rpc-endpoint.testnet-fe.nilogy.xyz"] },
+    public: { http: ["https://rpc-endpoint.testnet-fe.nilogy.xyz"] },
+  },
+});
+
+const targetNetwork = process.env.NEXT_PUBLIC_USE_NILLION_TESTNET === "true" ? nillionTestnet : chains.hardhat;
+
 const scaffoldConfig = {
   // The networks on which your DApp is live
-  targetNetworks: [chains.hardhat],
+  targetNetworks: [targetNetwork],
 
   // The interval at which your front-end polls the RPC servers for new data
   // it has no effect if you only target the local network (default is 4000)
