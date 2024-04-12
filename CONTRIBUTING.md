@@ -63,7 +63,7 @@ We follow the ["fork-and-pull" Git workflow](https://github.com/susam/gitpr)
 3. Create a new branch with a descriptive name
 4. Commit your changes to the new branch
 5. Push changes to your fork
-6. Open a PR in our repository by [creating a pull request from your fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork) Use the "main" branch as the base branch, the branch in the repository that you want to merge your changes into.
+6. Open a PR in our repository by [creating a pull request from your fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork). Use the "main" branch as the base branch, the branch in the repository that you want to merge your changes into.
 7. Tag one of the maintainers to review your PR
 
 Here are some tips for a high-quality pull request:
