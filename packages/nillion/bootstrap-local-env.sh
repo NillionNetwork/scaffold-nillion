@@ -17,10 +17,10 @@ OUTFILE=$(mktemp);
 PIDFILE=$(mktemp);
 
 "$NILLION_DEVNET" --seed scaffold-nillion >"$OUTFILE" & echo $! >"$PIDFILE";
-ENV_TO_UPDATE=".env ../nextjs/.env"
-ENV_TO_UPDATE_WITH_HARDHAT=".env ../nextjs/.env ../hardhat/.env"
+NEXTJS_ENV=".env ../nextjs/.env"
+HARDHAT_ENV=".env ../hardhat/.env"
 echo "--------------------"
-echo "Updating your ${ENV_TO_UPDATE_WITH_HARDHAT} files with nillion-devnet environment info... This may take a minute."
+echo "Updating your .env files with nillion-devnet environment info... This may take a minute."
 echo "--------------------"
 time_limit=160
 while true; do
@@ -100,8 +100,8 @@ for ((i=1; i<=$num_node_keys; i++)); do
     nodekey_file=$(mktemp)
     "$NILLION_CLI" "$NILLION_CLI_COMMAND_NODE_KEYGEN" "$nodekey_file"
     NODEKEY_FILES+=("$nodekey_file")
-    update_env "NEXT_PUBLIC_NILLION_NODEKEY_PATH_PARTY_$i" "$nodekey_file" $ENV_TO_UPDATE
-    update_env "NEXT_PUBLIC_NILLION_NODEKEY_TEXT_PARTY_$i" "$(log_file_contents $nodekey_file)" $ENV_TO_UPDATE
+    update_env "NEXT_PUBLIC_NILLION_NODEKEY_PATH_PARTY_$i" "$nodekey_file" $NEXTJS_ENV
+    update_env "NEXT_PUBLIC_NILLION_NODEKEY_TEXT_PARTY_$i" "$(log_file_contents $nodekey_file)" $NEXTJS_ENV
 done
 
 # Generate user keys and add to .env - ex: NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_1
@@ -109,21 +109,26 @@ for ((i=1; i<=$num_user_keys; i++)); do
     userkey_file=$(mktemp)
     "$NILLION_CLI" "$NILLION_CLI_COMMAND_USER_KEYGEN" "$userkey_file"
     USERKEY_FILES+=("$userkey_file")
-    update_env "NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_$i" "$userkey_file" $ENV_TO_UPDATE
-    update_env "NEXT_PUBLIC_NILLION_USERKEY_TEXT_PARTY_$i" "$(log_file_contents $userkey_file)" $ENV_TO_UPDATE
+    update_env "NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_$i" "$userkey_file" $NEXTJS_ENV
+    update_env "NEXT_PUBLIC_NILLION_USERKEY_TEXT_PARTY_$i" "$(log_file_contents $userkey_file)" $NEXTJS_ENV
 done
 
 echo "🔑 Node key and user keys have been generated and added to .env"
 
-# Add environment variables to .env
-update_env "NEXT_PUBLIC_NILLION_WEBSOCKETS" "$WEBSOCKET" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_CLUSTER_ID" "$CLUSTER_ID" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT" "$PAYMENTS_RPC" $ENV_TO_UPDATE_WITH_HARDHAT
-update_env "NEXT_PUBLIC_NILLION_BLINDING_FACTORS_MANAGER_SC_ADDRESS" "$PAYMENTS_BF_ADDR" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_PAYMENTS_SC_ADDRESS" "$PAYMENTS_SC_ADDR" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_CHAIN_ID" "$PAYMENTS_CHAIN" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $ENV_TO_UPDATE_WITH_HARDHAT
-update_env "NEXT_PUBLIC_NILLION_BOOTNODE_MULTIADDRESS" "$BOOT_MULTIADDR" $ENV_TO_UPDATE
+# Add environment variables to NextJs .env
+update_env "NEXT_PUBLIC_NILLION_WEBSOCKETS" "$WEBSOCKET" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_CLUSTER_ID" "$CLUSTER_ID" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT" "$PAYMENTS_RPC" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_BLINDING_FACTORS_MANAGER_SC_ADDRESS" "$PAYMENTS_BF_ADDR" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_PAYMENTS_SC_ADDRESS" "$PAYMENTS_SC_ADDR" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_CHAIN_ID" "$PAYMENTS_CHAIN" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_BOOTNODE_MULTIADDRESS" "$BOOT_MULTIADDR" $NEXTJS_ENV
+
+# Add environment variables to Hardhat .env
+update_env "NILLION_CONFIG_RPC_URL" "$PAYMENTS_RPC" $HARDHAT_ENV
+update_env "NILLION_CONFIG_DEPLOYER_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $HARDHAT_ENV
+update_env "NILLION_CONFIG_CHAIN_ID" "$PAYMENTS_CHAIN" $HARDHAT_ENV
 
 echo "Running at process pid: $(pgrep -f $NILLION_DEVNET)"
 
@@ -142,5 +147,5 @@ echo "-------------------------------------------------------"
 echo "-----------🦆 CONNECTED TO NILLION-DEVNET 🦆-----------"
 echo "-------------------------------------------------------"
 
-echo "ℹ️ Your $ENV_TO_UPDATE file configurations were updated with nillion-devnet connection variables: websocket, cluster id, keys, blockchain info"
+echo "ℹ️ Your NextJS and Hardhat .env file configurations were updated with nillion-devnet connection variables: websocket, cluster id, keys, blockchain info"
 echo "💻 The Nillion devnet is still running behind the scenes; to spin down the Nillion devnet at any time, run 'yarn nillion-devnet-stop'"

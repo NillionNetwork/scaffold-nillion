@@ -10,7 +10,7 @@ export type ScaffoldConfig = {
   walletAutoConnect: boolean;
 };
 
-const fallbackChain = chains.sepolia;
+const fallbackChain = chains.hardhat;
 
 const rpcUrls = process.env.NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT
   ? {

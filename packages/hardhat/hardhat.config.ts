@@ -19,6 +19,20 @@ const deployerPrivateKey =
 // If not set, it uses ours Etherscan default API key.
 const etherscanApiKey = process.env.ETHERSCAN_API_KEY || "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW";
 
+// Add any other testnet from config
+const configNetwork =
+  process.env.NILLION_CONFIG_RPC_URL &&
+  process.env.NILLION_CONFIG_DEPLOYER_PRIVATE_KEY &&
+  process.env.NILLION_CONFIG_CHAIN_ID
+    ? {
+        configNetwork: {
+          url: process.env.NILLION_CONFIG_RPC_URL,
+          accounts: [process.env.NILLION_CONFIG_DEPLOYER_PRIVATE_KEY],
+          chainId: parseInt(process.env.NILLION_CONFIG_CHAIN_ID),
+        },
+      }
+    : {};
+
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.17",
@@ -126,10 +140,7 @@ const config: HardhatUserConfig = {
       url: "https://sepolia.publicgoods.network",
       accounts: [deployerPrivateKey],
     },
-    configTestnet: {
-      url: process.env.NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT,
-      accounts: [process.env.NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY || deployerPrivateKey],
-    },
+    ...configNetwork,
   },
   // configuration for harhdat-verify plugin
   etherscan: {
