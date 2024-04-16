@@ -79,7 +79,7 @@ type IsContractDeclarationMissing<TYes, TNo> = typeof contractsData extends { [k
 
 type ContractsDeclaration = IsContractDeclarationMissing<GenericContractsDeclaration, typeof contractsData>;
 
-// @ts-ignore TODO remove ignore once Nillion Testnet chain id is added to viem
+// @ts-ignore TODO remove ignore once chain id is added to viem
 type Contracts = ContractsDeclaration[ConfiguredChainId];
 
 export type ContractName = keyof Contracts;

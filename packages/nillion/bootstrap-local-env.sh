@@ -18,8 +18,9 @@ PIDFILE=$(mktemp);
 
 "$NILLION_DEVNET" --seed scaffold-nillion >"$OUTFILE" & echo $! >"$PIDFILE";
 ENV_TO_UPDATE=".env ../nextjs/.env"
+ENV_TO_UPDATE_WITH_HARDHAT=".env ../nextjs/.env ../hardhat/.env"
 echo "--------------------"
-echo "Updating your ${ENV_TO_UPDATE} files with nillion-devnet environment info... This may take a minute."
+echo "Updating your ${ENV_TO_UPDATE_WITH_HARDHAT} files with nillion-devnet environment info... This may take a minute."
 echo "--------------------"
 time_limit=160
 while true; do
@@ -117,11 +118,11 @@ echo "🔑 Node key and user keys have been generated and added to .env"
 # Add environment variables to .env
 update_env "NEXT_PUBLIC_NILLION_WEBSOCKETS" "$WEBSOCKET" $ENV_TO_UPDATE
 update_env "NEXT_PUBLIC_NILLION_CLUSTER_ID" "$CLUSTER_ID" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT" "$PAYMENTS_RPC" $ENV_TO_UPDATE
+update_env "NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT" "$PAYMENTS_RPC" $ENV_TO_UPDATE_WITH_HARDHAT
 update_env "NEXT_PUBLIC_NILLION_BLINDING_FACTORS_MANAGER_SC_ADDRESS" "$PAYMENTS_BF_ADDR" $ENV_TO_UPDATE
 update_env "NEXT_PUBLIC_NILLION_PAYMENTS_SC_ADDRESS" "$PAYMENTS_SC_ADDR" $ENV_TO_UPDATE
 update_env "NEXT_PUBLIC_NILLION_CHAIN_ID" "$PAYMENTS_CHAIN" $ENV_TO_UPDATE
-update_env "NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $ENV_TO_UPDATE
+update_env "NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $ENV_TO_UPDATE_WITH_HARDHAT
 update_env "NEXT_PUBLIC_NILLION_BOOTNODE_MULTIADDRESS" "$BOOT_MULTIADDR" $ENV_TO_UPDATE
 
 echo "Running at process pid: $(pgrep -f $NILLION_DEVNET)"

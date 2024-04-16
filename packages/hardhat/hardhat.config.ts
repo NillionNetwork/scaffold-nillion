@@ -126,9 +126,9 @@ const config: HardhatUserConfig = {
       url: "https://sepolia.publicgoods.network",
       accounts: [deployerPrivateKey],
     },
-    nillionTestnet: {
-      url: "https://rpc-endpoint.testnet-fe.nilogy.xyz",
-      accounts: [deployerPrivateKey],
+    configTestnet: {
+      url: process.env.NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT,
+      accounts: [process.env.NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY || ""],
     },
   },
   // configuration for harhdat-verify plugin

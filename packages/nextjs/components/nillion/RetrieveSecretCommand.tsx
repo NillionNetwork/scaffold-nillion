@@ -8,15 +8,17 @@ const RetrieveSecretCommand: React.FC<{
   secretType: string;
 }> = ({ userKey, storeId, secretName, secretType }) => {
   return (
-    <span>
-      ✅ Stored {secretType} {secretName} <br /> <CopyString str={storeId || ""} textBefore={`store_id: `} full />
-      <br />
-      <p>
-        👀 Optional: Copy and run the following command to retrieve-secret from the command line to see the value of{" "}
-        {secretName} using the nillion SDK tool
-      </p>
-      <CopyString str={retrieveSecretCommand(userKey, storeId, secretName)} start={30} end={30} code />
-    </span>
+    !process.env.NEXT_PUBLIC_USE_NILLION_CONFIG && (
+      <span>
+        ✅ Stored {secretType} {secretName} <br /> <CopyString str={storeId || ""} textBefore={`store_id: `} full />
+        <br />
+        <p>
+          👀 Optional: Copy and run the following command to retrieve-secret from the command line to see the value of{" "}
+          {secretName} using the nillion SDK tool
+        </p>
+        <CopyString str={retrieveSecretCommand(userKey, storeId, secretName)} start={30} end={30} code />
+      </span>
+    )
   );
 };
 

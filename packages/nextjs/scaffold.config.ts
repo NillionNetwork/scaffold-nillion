@@ -10,22 +10,24 @@ export type ScaffoldConfig = {
   walletAutoConnect: boolean;
 };
 
-const nillionTestnet: chains.Chain = defineChain({
-  id: 22255222,
-  name: "Nillion Testnet",
-  network: "nillion-fe-testnet",
-  nativeCurrency: {
-    decimals: 18,
-    name: "Ether",
-    symbol: "ETH",
-  },
-  rpcUrls: {
-    default: { http: ["https://rpc-endpoint.testnet-fe.nilogy.xyz"] },
-    public: { http: ["https://rpc-endpoint.testnet-fe.nilogy.xyz"] },
-  },
+const fallbackChain = chains.sepolia;
+
+const rpcUrls = process.env.NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT
+  ? {
+      default: { http: [process.env.NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT] },
+      public: { http: [process.env.NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT] },
+    }
+  : fallbackChain.rpcUrls;
+
+const configChain: chains.Chain = defineChain({
+  ...fallbackChain,
+  id: process.env.NEXT_PUBLIC_NILLION_CHAIN_ID ? parseInt(process.env.NEXT_PUBLIC_NILLION_CHAIN_ID) : fallbackChain.id,
+  name: process.env.NEXT_PUBLIC_NILLION_NAME || fallbackChain.name,
+  network: process.env.NEXT_PUBLIC_NILLION_NETWORK || fallbackChain.network,
+  rpcUrls,
 });
 
-const targetNetwork = process.env.NEXT_PUBLIC_USE_NILLION_TESTNET === "true" ? nillionTestnet : chains.hardhat;
+const targetNetwork = process.env.NEXT_PUBLIC_USE_NILLION_CONFIG === "true" ? configChain : chains.hardhat;
 
 const scaffoldConfig = {
   // The networks on which your DApp is live

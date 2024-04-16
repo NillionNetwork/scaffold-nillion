@@ -72,7 +72,15 @@ cd scaffold-eth-with-nillion
 yarn install
 ```
 
-### 2. Run a local ethereum network in the first terminal:
+### 2. Run the Nillion devnet in the first terminal:
+
+This bootstraps Nillion devnet, a local network of nodes and adds cluster info to your NextJS app .env file and blockchain info to your Hardhat .env file
+
+```
+yarn nillion-devnet
+```
+
+### 3. Run a local ethereum network in the second terminal:
 
 ```
 yarn chain
@@ -80,21 +88,13 @@ yarn chain
 
 This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `hardhat.config.ts`.
 
-### 3. Open a second terminal and deploy the test ethereum contract:
+### 4. Open a third terminal and deploy the test ethereum contract:
 
 ```
 yarn deploy
 ```
 
 This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
-
-### 4. Open a third terminal to run the Nillion devnet:
-
-This bootstraps Nillion devnet, a local network of nodes and adds cluster info to your NextJS app .env file
-
-```
-yarn nillion-devnet
-```
 
 ### 5. Optional: Nada program setup
 
@@ -217,16 +217,6 @@ Run smart contract test with `yarn hardhat:test`
 - Notice that the buttons and functionality for this page are not hooked up yet.
 - Edit the code for this page in `packages/nextjs/app/nillion-hello-world/page.tsx` to complete each of the 🎯 TODOs to get the page working
 - Need a hint on how to get something working? Take a look at the completed `packages/nextjs/app/nillion-hello-world-complete/page.tsx` page
-
-## Connecting to Nillion Testnet
-
-Today only Nucleus builders have been allowlisted to connect to the Nillion Testnet.
-
-In step 4, `yarn nillion-devnet` sets up the scaffold to run a devnet (a local nillion network).
-
-To instead connect to the Nillion Testnet, replace testnet values from `packages/nextjs/.env.nilliontestnet` with the devnet ones in your `packages/nextjs/.env`. Make sure that your `NEXT_PUBLIC_NILLION_NODEKEY_ALLOWLISTED_SEED` is one you shared with the Nillion team when allowlisting your peer id for the testnet.
-
-Now when you run the NextJS app, your app will connect to the Nillion Testnet.
 
 ## About Scaffold-ETH 2
 
