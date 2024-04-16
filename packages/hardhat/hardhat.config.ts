@@ -128,7 +128,7 @@ const config: HardhatUserConfig = {
     },
     configTestnet: {
       url: process.env.NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT,
-      accounts: [process.env.NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY || ""],
+      accounts: [process.env.NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY || deployerPrivateKey],
     },
   },
   // configuration for harhdat-verify plugin
