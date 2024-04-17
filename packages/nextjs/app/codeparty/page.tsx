@@ -237,7 +237,7 @@ def nada_main():
             owner: codeName,
             handle: partyState.peers[p].handle,
             ownercodepartyid: partyState.peers[codeName].codepartyid,
-            owneruserid: client.user_id(),
+            owneruserid: client.user_id,
             partyid: partyState.peers[p].partyid,
             programid: programId,
             ...nadaParsed[selectedPeers[p]],
@@ -321,7 +321,7 @@ def nada_main():
           codePartyBindings[i].partyid,
         );
 
-        if ("output" in codePartyBindings[i]) {
+        if (codePartyBindings[i].output) {
           console.log(
             `adding output binding: ${codePartyBindings[i].output}: ${codePartyBindings[i].partyid
             }`,
@@ -447,11 +447,16 @@ def nada_main():
     setNadalang(val);
   }, []);
 
-  const onMyContrib = (idx: number, input: number) => {
-    const newContrib = [...myContrib];
-    newContrib[idx] = input;
-    setMyContrib(newContrib);
-  };
+  const onMyContrib = (idx: number) =>
+    (
+      { target: { value: contrib } }: {
+        target: { value: number };
+      },
+    ) => {
+      const newContrib = [...myContrib];
+      newContrib[idx] = contrib;
+      setMyContrib(newContrib);
+    };
 
   const onSubmitContrib = async () => {
     const task = partyQueue;
@@ -461,7 +466,6 @@ def nada_main():
         `starting submit to Nillion Network: ${JSON.stringify(task, null, 4)}`,
       );
 
-      const userId = client.user_id();
       const results = [];
       for (let idx = 0; idx < task.inputs.length; idx++) {
         const input = task.inputs[idx];
@@ -469,7 +473,7 @@ def nada_main():
 
         const my_secrets = new nillion.Secrets();
         const permissions = nillion.Permissions.default_for_user(
-          userId,
+          client.user_id,
           task.programid,
         );
         permissions.add_compute_permissions(
@@ -686,7 +690,7 @@ def nada_main():
         console.log(`metamask has ${balanceInEth}`);
         const mm_checksumAddr = Web3.utils.toChecksumAddress(mm_accounts[0]);
         setMmAddress(mm_checksumAddr);
-        if (parseFloat(balanceInEth) < 1.5) {
+        if (parseFloat(balanceInEth) < 1.4) {
           // this wallet needs funding
           toast({
             title: "Auto-faucet",
@@ -762,7 +766,17 @@ def nada_main():
         const pkWithout0x = account.privateKey.replace(/^0x/, "");
         payments_config.signer.wallet["private_key"] = pkWithout0x;
         console.log(
-          `using payments_config: ${JSON.stringify(payments_config, null, 4)}`,
+          `creating nillion client with config: ${JSON.stringify(
+            {
+              userkey: _userkey,
+              nodekey,
+              bootnodes: partyState.config.bootnodes,
+              payments_config,
+            },
+            null,
+            4,
+          )
+          }`,
         );
         const _client = new _nillion.NillionClient(
           _userkey,
@@ -770,6 +784,7 @@ def nada_main():
           partyState.config.bootnodes,
           payments_config,
         );
+        console.log(`client created. going to pull cluster info`);
 
         const status = await _client.cluster_information(
           partyState.config.cluster_id,
@@ -778,11 +793,10 @@ def nada_main():
         setClient(_client);
         setNillion(_nillion);
 
-        const party_id = _client.party_id();
         dispatch({
           type: "register",
           // @ts-ignore - codepartyid is injected in the partykit server
-          payload: { handle: myName, partyid: party_id },
+          payload: { handle: myName, partyid: _client.party_id },
         });
       } catch (e) {
         console.error(`init error: ${e}`);
@@ -1267,8 +1281,7 @@ def nada_main():
                             // @ts-ignore - https://v2.chakra-ui.com/docs/components/number-input/props
                             size={"lg"}
                             // @ts-ignore - https://v2.chakra-ui.com/docs/components/number-input/props
-                            onChange={({ valueAsNumber: val }) =>
-                              onMyContrib(idx, val)}
+                            onChange={onMyContrib(idx)}
                           />
                         </NumberInput>
                         <InputRightAddon color="blue.500">
@@ -1319,7 +1332,7 @@ def nada_main():
                     src="/codeparty-result.png"
                   />
                   <Center>
-                    <Text>{<RainbowText text={computeResult.result} />}</Text>
+                    <RainbowText text={computeResult.result} />
                   </Center>
                 </Stack>
               </ModalBody>

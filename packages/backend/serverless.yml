@@ -3,7 +3,7 @@ frameworkVersion: "3"
 
 provider:
   name: aws
-  stage: testnet-fe
+  stage: testnet-nucleus
   region: eu-west-1
   deploymentBucket:
     name: ${self:service}
