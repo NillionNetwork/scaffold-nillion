@@ -42,7 +42,9 @@ export default function useNillionSnapClient() {
   };
 
   useEffect(() => {
-    if (!connectedAddress) {
+    if (connectedAddress) {
+      handleConnectToSnap();
+    } else {
       resetNillion();
     }
   }, [connectedAddress]);
