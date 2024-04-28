@@ -10,10 +10,11 @@ import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
 import useNillionSnapClient from "~~/hooks/useNillionSnapClient";
+import { SecretInputType } from "~~/types/nillion";
 import { compute } from "~~/utils/nillion/compute";
 import { retrieveSecretInteger } from "~~/utils/nillion/retrieveSecretInteger";
 import { storeProgram } from "~~/utils/nillion/storeProgram";
-import { storeSecretsInteger } from "~~/utils/nillion/storeSecretsInteger";
+import { storeSecrets } from "~~/utils/nillion/storeSecrets";
 
 interface StringObject {
   [key: string]: string | null;
@@ -55,19 +56,19 @@ const Home: NextPage = () => {
     permissionedUserIdForDeleteSecret: string | null,
     permissionedUserIdForComputeSecret: string | null,
   ) {
-    if (programId) {
+    if (nillion && nillionClient && programId) {
       const partyName = parties[0];
-      await storeSecretsInteger(
+      await storeSecrets({
         nillion,
         nillionClient,
-        [{ name: secretName, value: secretValue }],
+        secretsToStore: [{ name: secretName, value: secretValue, type: SecretInputType.INTEGER }],
         programId,
         partyName,
-        permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
-        permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
-        permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
-        permissionedUserIdForComputeSecret ? [permissionedUserIdForComputeSecret] : [],
-      ).then(async (store_id: string) => {
+        usersWithRetrievePermissions: permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
+        usersWithUpdatePermissions: permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
+        usersWithDeletePermissions: permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
+        usersWithComputePermissions: permissionedUserIdForComputeSecret ? [permissionedUserIdForComputeSecret] : [],
+      }).then(async (store_id: string) => {
         console.log("Secret stored at store_id:", store_id);
         setStoredSecretsNameToStoreId(prevSecrets => ({
           ...prevSecrets,

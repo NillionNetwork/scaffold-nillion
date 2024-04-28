@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
+import { NillionClient, NillionClientJSBrowser } from "~~/types/nillion";
 import { getUserKeyFromSnap } from "~~/utils/nillion";
 
 export default function useNillionSnapClient() {
@@ -7,8 +8,8 @@ export default function useNillionSnapClient() {
   const [connectedToSnap, setConnectedToSnap] = useState<boolean>(false);
   const [userKey, setUserKey] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
-  const [nillion, setNillion] = useState<any>(null);
-  const [nillionClient, setNillionClient] = useState<any>(null);
+  const [nillion, setNillion] = useState<NillionClientJSBrowser | null>(null);
+  const [nillionClient, setNillionClient] = useState<NillionClient | null>(null);
 
   async function handleConnectToSnap() {
     const snapResponse = await getUserKeyFromSnap();

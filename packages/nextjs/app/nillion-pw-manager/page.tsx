@@ -10,8 +10,9 @@ import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
 import useNillionSnapClient from "~~/hooks/useNillionSnapClient";
+import { SecretInputType } from "~~/types/nillion";
 import { retrieveSecretBlob } from "~~/utils/nillion/retrieveSecretBlob";
-import { storeSecretsBlob } from "~~/utils/nillion/storeSecretsBlob";
+import { storeSecrets } from "~~/utils/nillion/storeSecrets";
 
 interface StoredSecrets {
   [secretName: string]: string; // store_id
@@ -34,25 +35,27 @@ const Home: NextPage = () => {
     permissionedUserIdForUpdateSecret: string | null,
     permissionedUserIdForDeleteSecret: string | null,
   ) {
-    await storeSecretsBlob(
-      nillion,
-      nillionClient,
-      [{ name: secretName, value: secretValue }],
-      permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
-      permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
-      permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
-    ).then((store_id: string) => {
-      setStoredSecrets(prevSecrets => ({
-        ...prevSecrets,
-        [secretName]: store_id,
-      }));
+    if (nillion && nillionClient) {
+      storeSecrets({
+        nillion,
+        nillionClient,
+        secretsToStore: [{ name: secretName, value: secretValue, type: SecretInputType.BLOB }],
+        usersWithRetrievePermissions: permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
+        usersWithUpdatePermissions: permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
+        usersWithDeletePermissions: permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
+      }).then((storeId: string) => {
+        setStoredSecrets(prevSecrets => ({
+          ...prevSecrets,
+          [secretName]: storeId,
+        }));
 
-      setLatestSecretName(secretName);
-    });
+        setLatestSecretName(secretName);
+      });
+    }
   }
 
-  async function handleRetrieveSecretBlob(store_id: string, secret_name: string) {
-    await retrieveSecretBlob(nillionClient, store_id, secret_name).then(setRetrievedValue);
+  async function handleRetrieveSecretBlob(storeId: string, secret_name: string) {
+    await retrieveSecretBlob(nillionClient, storeId, secret_name).then(setRetrievedValue);
   }
 
   const handleSecretDropdownSelection = (secretName: string) => {

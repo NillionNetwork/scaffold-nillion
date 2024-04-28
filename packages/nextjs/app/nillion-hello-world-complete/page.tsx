@@ -9,8 +9,9 @@ import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
 import useNillionSnapClient from "~~/hooks/useNillionSnapClient";
+import { SecretInputType } from "~~/types/nillion";
 import { retrieveSecretBlob } from "~~/utils/nillion/retrieveSecretBlob";
-import { storeSecretsBlob } from "~~/utils/nillion/storeSecretsBlob";
+import { storeSecrets } from "~~/utils/nillion/storeSecrets";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
@@ -30,30 +31,32 @@ const Home: NextPage = () => {
     permissionedUserIdForUpdateSecret: string | null,
     permissionedUserIdForDeleteSecret: string | null,
   ) {
-    // call storeSecretsBlob, then handle the promise that resolves with a store_id
-    await storeSecretsBlob(
-      nillion,
-      nillionClient,
-      [{ name: secretName, value: secretValue }],
-      permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
-      permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
-      permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
-    ).then((store_id: string) => {
-      // inside of the "then" method, console log the store_id
-      console.log("Secret stored at store_id:", store_id);
-      // update state: set storedSecretName
-      setStoredSecretName(secretName);
-      // update state: set storeId
-      setStoreId(store_id);
-    });
+    if (nillion && nillionClient) {
+      // call storeSecretsBlob, then handle the promise that resolves with a storeId
+      storeSecrets({
+        nillion,
+        nillionClient,
+        secretsToStore: [{ name: secretName, value: secretValue, type: SecretInputType.BLOB }],
+        usersWithRetrievePermissions: permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
+        usersWithUpdatePermissions: permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
+        usersWithDeletePermissions: permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
+      }).then((storeId: string) => {
+        // inside of the "then" method, console log the storeId
+        console.log("Secret stored at store_id:", storeId);
+        // update state: set storedSecretName
+        setStoredSecretName(secretName);
+        // update state: set storeId
+        setStoreId(storeId);
+      });
+    }
   }
 
   // ✅ #4 DONE: complete this asynchronous function to retrieve and read the value of a secret blob
   // Once this is done, you can retrieve the stored message from Nillion
-  async function handleRetrieveSecretBlob(store_id: string, secret_name: string) {
+  async function handleRetrieveSecretBlob(storeId: string, secret_name: string) {
     // call retrieveSecretBlob then handle the promise that resolves with the retrieved value
     // update state: set retrievedValue
-    await retrieveSecretBlob(nillionClient, store_id, secret_name).then(setRetrievedValue);
+    await retrieveSecretBlob(nillionClient, storeId, secret_name).then(setRetrievedValue);
   }
 
   // reset store blob form to store a new secret

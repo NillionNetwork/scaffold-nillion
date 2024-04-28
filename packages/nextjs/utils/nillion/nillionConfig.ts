@@ -1,3 +1,7 @@
+if (!process.env.NEXT_PUBLIC_NILLION_CLUSTER_ID) {
+  throw new Error("NEXT_PUBLIC_NILLION_CLUSTER_ID not provided by env");
+}
+
 export const nillionConfig = {
   websockets: [process.env.NEXT_PUBLIC_NILLION_WEBSOCKETS],
   cluster_id: process.env.NEXT_PUBLIC_NILLION_CLUSTER_ID,
