@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { CopyString } from "~~/components/nillion/CopyString";
@@ -9,7 +9,7 @@ import { NillionOnboarding } from "~~/components/nillion/NillionOnboarding";
 import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
-import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
+import useNillionSnapClient from "~~/hooks/useNillionSnapClient";
 import { retrieveSecretBlob } from "~~/utils/nillion/retrieveSecretBlob";
 import { storeSecretsBlob } from "~~/utils/nillion/storeSecretsBlob";
 
@@ -18,39 +18,14 @@ interface StoredSecrets {
 }
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
-  const [connectedToSnap, setConnectedToSnap] = useState<boolean>(false);
-  const [userKey, setUserKey] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [nillion, setNillion] = useState<any>(null);
-  const [nillionClient, setNillionClient] = useState<any>(null);
   const [selectedSecretName, setSelectedSecretName] = useState<string>("");
   const [selectedStoreId, setSelectedStoreId] = useState<string | null>(null);
   const [latestSecretName, setLatestSecretName] = useState<string | null>(null);
   const [storedSecrets, setStoredSecrets] = useState<StoredSecrets>({});
   const [retrievedValue, setRetrievedValue] = useState<string | null>(null);
 
-  async function handleConnectToSnap() {
-    const snapResponse = await getUserKeyFromSnap();
-    setUserKey(snapResponse?.user_key || null);
-    setConnectedToSnap(snapResponse?.connectedToSnap || false);
-  }
-
-  useEffect(() => {
-    if (userKey) {
-      const getNillionClientLibrary = async () => {
-        const nillionClientUtil = await import("~~/utils/nillion/nillionClient");
-        const libraries = await nillionClientUtil.getNillionClient(userKey);
-        setNillion(libraries.nillion);
-        setNillionClient(libraries.nillionClient);
-        return libraries.nillionClient;
-      };
-
-      getNillionClientLibrary().then(nillionClient => {
-        const user_id = nillionClient.user_id;
-        setUserId(user_id);
-      });
-    }
-  }, [userKey]);
+  const { userKey, nillionClient, handleConnectToSnap, connectedToSnap, userId, nillion, resetNillion } =
+    useNillionSnapClient();
 
   async function handleSecretFormSubmit(
     secretName: string,
@@ -85,24 +60,10 @@ const Home: NextPage = () => {
     setSelectedStoreId(storedSecrets[secretName]);
   };
 
-  const resetNillion = () => {
-    setConnectedToSnap(false);
-    setUserKey(null);
-    setUserId(null);
-    setNillion(null);
-    setNillionClient(null);
-  };
-
   const resetForm = () => {
     setLatestSecretName(null);
     setRetrievedValue(null);
   };
-
-  useEffect(() => {
-    if (!connectedAddress) {
-      resetNillion();
-    }
-  }, [connectedAddress]);
 
   return (
     <>

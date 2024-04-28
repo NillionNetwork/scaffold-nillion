@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { CopyString } from "~~/components/nillion/CopyString";
@@ -8,51 +8,16 @@ import { NillionOnboarding } from "~~/components/nillion/NillionOnboarding";
 import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
+import useNillionSnapClient from "~~/hooks/useNillionSnapClient";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
-  const [connectedToSnap, setConnectedToSnap] = useState<boolean>(false);
-  const [userKey, setUserKey] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [nillion, setNillion] = useState<any>(null);
-  const [nillionClient, setNillionClient] = useState<any>(null);
   const [storedSecretName, setStoredSecretName] = useState<string>("my_blob");
   const [storeId, setStoreId] = useState<string | null>(null);
   const [retrievedValue, setRetrievedValue] = useState<string | null>(null);
 
-  // 🎯 TODO #1 complete this function to connect to the MetaMask Snap
-  // Once this is done, the "Connect to Snap with Nillion User Key" button will work
-  async function handleConnectToSnap() {
-    // call getUserKeyFromSnap
-    // update state: set userKey with the response from getUserKeyFromSnap
-    // update state: set connectedToSnap based on the response from getUserKeyFromSnap
-  }
-
-  // 🎯 TODO #2 complete this useEffect hook to set up Nillion once a userKey exists
-  // Once this is done, you can call nillion libraries from the page
-  useEffect(() => {
-    // conditional execution: Check if userKey exists before implementing logic
-    if (userKey) {
-      // create an asynchronous getNillionClientLibrary function
-      const getNillionClientLibrary = async () => {
-        // dynamically import the nillionClient module using await import("~~/utils/nillion/nillionClient")
-        const nillionClientUtil = await import("~~/utils/nillion/nillionClient");
-
-        // asyncronously call the getNillionClient function from the imported nillionClient module with the userKey
-
-        // update state: set nillion
-        // update state: set nillionClient
-
-        // return nillionClient
-      };
-
-      // call getNillionClientLibrary, then use the returned nillionClient
-      getNillionClientLibrary().then(nillionClient => {
-        // get the user_id from the instance of nillionClient
-        // update state: set user_id
-      });
-    }
-  }, [userKey]);
+  const { userKey, nillionClient, handleConnectToSnap, connectedToSnap, userId, nillion, resetNillion } =
+    useNillionSnapClient();
 
   // 🎯 TODO #3 complete this asynchronous function to process the submission of a form used for storing secrets
   // Once this is done, the form will be hooked up to store your secret blob
@@ -76,27 +41,11 @@ const Home: NextPage = () => {
     // update state: set retrievedValue
   }
 
-  // reset nillion values
-  const resetNillion = () => {
-    setConnectedToSnap(false);
-    setUserKey(null);
-    setUserId(null);
-    setNillion(null);
-    setNillionClient(null);
-  };
-
   // reset store blob form to store a new secret
   const resetForm = () => {
     setStoreId(null);
     setRetrievedValue(null);
   };
-
-  useEffect(() => {
-    // when wallet is disconnected, reset nillion
-    if (!connectedAddress) {
-      resetNillion();
-    }
-  }, [connectedAddress]);
 
   return (
     <>
