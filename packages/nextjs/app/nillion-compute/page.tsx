@@ -11,7 +11,6 @@ import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
 import { compute } from "~~/utils/nillion/compute";
 import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
-import { retrieveSecretCommand } from "~~/utils/nillion/retrieveSecretCommand";
 import { retrieveSecretInteger } from "~~/utils/nillion/retrieveSecretInteger";
 import { storeProgram } from "~~/utils/nillion/storeProgram";
 import { storeSecretsInteger } from "~~/utils/nillion/storeSecretsInteger";
@@ -190,7 +189,7 @@ const Home: NextPage = () => {
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            {!connectedToSnap ? (
+            {!userKey ? (
               <NillionOnboarding />
             ) : (
               <div>

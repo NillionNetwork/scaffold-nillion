@@ -8,9 +8,6 @@ import { NillionOnboarding } from "~~/components/nillion/NillionOnboarding";
 import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
-import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
-import { retrieveSecretBlob } from "~~/utils/nillion/retrieveSecretBlob";
-import { storeSecretsBlob } from "~~/utils/nillion/storeSecretsBlob";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
@@ -182,7 +179,7 @@ const Home: NextPage = () => {
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            {!connectedToSnap ? (
+            {!userKey ? (
               <NillionOnboarding />
             ) : (
               <div className="flex flex-row justify-between">

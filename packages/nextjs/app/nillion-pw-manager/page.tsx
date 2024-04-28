@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type * as NillionTypes from "@nillion/nillion-client-js-browser/nillion_client_js_browser.d.ts";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { CopyString } from "~~/components/nillion/CopyString";
@@ -165,7 +164,7 @@ const Home: NextPage = () => {
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            {!connectedToSnap ? (
+            {!userKey ? (
               <NillionOnboarding />
             ) : (
               <div className="flex flex-row justify-between">
