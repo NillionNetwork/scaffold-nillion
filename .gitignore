@@ -12,3 +12,4 @@ node_modules
 .vscode/**
 .DS_Store
 *.key
+.venv
