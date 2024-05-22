@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import type * as NillionTypes from "@nillion/nillion-client-js-browser/nillion_client_js_browser.d.ts";
+import { useState } from "react";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { CopyString } from "~~/components/nillion/CopyString";
@@ -10,48 +9,24 @@ import { NillionOnboarding } from "~~/components/nillion/NillionOnboarding";
 import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
-import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
+import useNillionSnapClient from "~~/hooks/useNillionSnapClient";
+import { SecretInputType } from "~~/types/nillion";
 import { retrieveSecretBlob } from "~~/utils/nillion/retrieveSecretBlob";
-import { storeSecretsBlob } from "~~/utils/nillion/storeSecretsBlob";
+import { storeSecrets } from "~~/utils/nillion/storeSecrets";
 
 interface StoredSecrets {
   [secretName: string]: string; // store_id
 }
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
-  const [connectedToSnap, setConnectedToSnap] = useState<boolean>(false);
-  const [userKey, setUserKey] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [nillion, setNillion] = useState<any>(null);
-  const [nillionClient, setNillionClient] = useState<any>(null);
   const [selectedSecretName, setSelectedSecretName] = useState<string>("");
   const [selectedStoreId, setSelectedStoreId] = useState<string | null>(null);
   const [latestSecretName, setLatestSecretName] = useState<string | null>(null);
   const [storedSecrets, setStoredSecrets] = useState<StoredSecrets>({});
   const [retrievedValue, setRetrievedValue] = useState<string | null>(null);
 
-  async function handleConnectToSnap() {
-    const snapResponse = await getUserKeyFromSnap();
-    setUserKey(snapResponse?.user_key || null);
-    setConnectedToSnap(snapResponse?.connectedToSnap || false);
-  }
-
-  useEffect(() => {
-    if (userKey) {
-      const getNillionClientLibrary = async () => {
-        const nillionClientUtil = await import("~~/utils/nillion/nillionClient");
-        const libraries = await nillionClientUtil.getNillionClient(userKey);
-        setNillion(libraries.nillion);
-        setNillionClient(libraries.nillionClient);
-        return libraries.nillionClient;
-      };
-
-      getNillionClientLibrary().then(nillionClient => {
-        const user_id = nillionClient.user_id;
-        setUserId(user_id);
-      });
-    }
-  }, [userKey]);
+  const { userKey, nillionClient, handleConnectToSnap, connectedToSnap, userId, nillion, resetNillion } =
+    useNillionSnapClient();
 
   async function handleSecretFormSubmit(
     secretName: string,
@@ -60,25 +35,27 @@ const Home: NextPage = () => {
     permissionedUserIdForUpdateSecret: string | null,
     permissionedUserIdForDeleteSecret: string | null,
   ) {
-    await storeSecretsBlob(
-      nillion,
-      nillionClient,
-      [{ name: secretName, value: secretValue }],
-      permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
-      permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
-      permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
-    ).then((store_id: string) => {
-      setStoredSecrets(prevSecrets => ({
-        ...prevSecrets,
-        [secretName]: store_id,
-      }));
+    if (nillion && nillionClient) {
+      storeSecrets({
+        nillion,
+        nillionClient,
+        secretsToStore: [{ name: secretName, value: secretValue, type: SecretInputType.BLOB }],
+        usersWithRetrievePermissions: permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
+        usersWithUpdatePermissions: permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
+        usersWithDeletePermissions: permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
+      }).then((storeId: string) => {
+        setStoredSecrets(prevSecrets => ({
+          ...prevSecrets,
+          [secretName]: storeId,
+        }));
 
-      setLatestSecretName(secretName);
-    });
+        setLatestSecretName(secretName);
+      });
+    }
   }
 
-  async function handleRetrieveSecretBlob(store_id: string, secret_name: string) {
-    await retrieveSecretBlob(nillionClient, store_id, secret_name).then(setRetrievedValue);
+  async function handleRetrieveSecretBlob(storeId: string, secret_name: string) {
+    await retrieveSecretBlob(nillionClient, storeId, secret_name).then(setRetrievedValue);
   }
 
   const handleSecretDropdownSelection = (secretName: string) => {
@@ -86,24 +63,10 @@ const Home: NextPage = () => {
     setSelectedStoreId(storedSecrets[secretName]);
   };
 
-  const resetNillion = () => {
-    setConnectedToSnap(false);
-    setUserKey(null);
-    setUserId(null);
-    setNillion(null);
-    setNillionClient(null);
-  };
-
   const resetForm = () => {
     setLatestSecretName(null);
     setRetrievedValue(null);
   };
-
-  useEffect(() => {
-    if (!connectedAddress) {
-      resetNillion();
-    }
-  }, [connectedAddress]);
 
   return (
     <>
@@ -165,7 +128,7 @@ const Home: NextPage = () => {
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            {!connectedToSnap ? (
+            {!userKey ? (
               <NillionOnboarding />
             ) : (
               <div className="flex flex-row justify-between">

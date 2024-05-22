@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { CopyString } from "~~/components/nillion/CopyString";
@@ -8,62 +8,19 @@ import { NillionOnboarding } from "~~/components/nillion/NillionOnboarding";
 import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
-import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
+import useNillionSnapClient from "~~/hooks/useNillionSnapClient";
+import { SecretInputType } from "~~/types/nillion";
 import { retrieveSecretBlob } from "~~/utils/nillion/retrieveSecretBlob";
-import { storeSecretsBlob } from "~~/utils/nillion/storeSecretsBlob";
+import { storeSecrets } from "~~/utils/nillion/storeSecrets";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
-  const [connectedToSnap, setConnectedToSnap] = useState<boolean>(false);
-  const [userKey, setUserKey] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [nillion, setNillion] = useState<any>(null);
-  const [nillionClient, setNillionClient] = useState<any>(null);
   const [storedSecretName, setStoredSecretName] = useState<string>("my_blob");
   const [storeId, setStoreId] = useState<string | null>(null);
   const [retrievedValue, setRetrievedValue] = useState<string | null>(null);
 
-  // ✅ #1 DONE: complete this function to connect to the MetaMask Snap
-  // Once this is done, the "Connect to Snap with Nillion User Key" button will work
-  async function handleConnectToSnap() {
-    // call getUserKeyFromSnap
-    const snapResponse = await getUserKeyFromSnap();
-    // update state: set userKey with the response from getUserKeyFromSnap
-    setUserKey(snapResponse?.user_key || null);
-    // update state: set connectedToSnap based on the response from getUserKeyFromSnap
-    setConnectedToSnap(snapResponse?.connectedToSnap || false);
-  }
-
-  // ✅ #2 DONE: complete this useEffect hook to set up Nillion once a userKey exists
-  // Once this is done, you can call nillion libraries from the page
-  useEffect(() => {
-    // conditional execution: Check if userKey exists before implementing logic
-    if (userKey) {
-      // create an asynchronous getNillionClientLibrary function
-      const getNillionClientLibrary = async () => {
-        // dynamically import the nillionClient module using await import("~~/utils/nillion/nillionClient")
-        const nillionClientUtil = await import("~~/utils/nillion/nillionClient");
-
-        // asyncronously call the getNillionClient function from the imported nillionClient module with the userKey
-        const libraries = await nillionClientUtil.getNillionClient(userKey);
-        // update state: set nillion
-        setNillion(libraries.nillion);
-        // update state: set nillionClient
-        setNillionClient(libraries.nillionClient);
-
-        // return nillionClient
-        return libraries.nillionClient;
-      };
-
-      // call getNillionClientLibrary, then use the returned nillionClient
-      getNillionClientLibrary().then(nillionClient => {
-        // get the user_id from the instance of nillionClient
-        const user_id = nillionClient.user_id;
-        // update state: set user_id
-        setUserId(user_id);
-      });
-    }
-  }, [userKey]);
+  const { userKey, nillionClient, handleConnectToSnap, connectedToSnap, userId, nillion, resetNillion } =
+    useNillionSnapClient();
 
   // ✅ #3 DONE: complete this asynchronous function to process the submission of a form used for storing secrets
   // Once this is done, the form will be hooked up to store your secret blob
@@ -74,53 +31,39 @@ const Home: NextPage = () => {
     permissionedUserIdForUpdateSecret: string | null,
     permissionedUserIdForDeleteSecret: string | null,
   ) {
-    // call storeSecretsBlob, then handle the promise that resolves with a store_id
-    await storeSecretsBlob(
-      nillion,
-      nillionClient,
-      [{ name: secretName, value: secretValue }],
-      permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
-      permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
-      permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
-    ).then((store_id: string) => {
-      // inside of the "then" method, console log the store_id
-      console.log("Secret stored at store_id:", store_id);
-      // update state: set storedSecretName
-      setStoredSecretName(secretName);
-      // update state: set storeId
-      setStoreId(store_id);
-    });
+    if (nillion && nillionClient) {
+      // call storeSecretsBlob, then handle the promise that resolves with a storeId
+      storeSecrets({
+        nillion,
+        nillionClient,
+        secretsToStore: [{ name: secretName, value: secretValue, type: SecretInputType.BLOB }],
+        usersWithRetrievePermissions: permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
+        usersWithUpdatePermissions: permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],
+        usersWithDeletePermissions: permissionedUserIdForDeleteSecret ? [permissionedUserIdForDeleteSecret] : [],
+      }).then((storeId: string) => {
+        // inside of the "then" method, console log the storeId
+        console.log("Secret stored at store_id:", storeId);
+        // update state: set storedSecretName
+        setStoredSecretName(secretName);
+        // update state: set storeId
+        setStoreId(storeId);
+      });
+    }
   }
 
   // ✅ #4 DONE: complete this asynchronous function to retrieve and read the value of a secret blob
   // Once this is done, you can retrieve the stored message from Nillion
-  async function handleRetrieveSecretBlob(store_id: string, secret_name: string) {
+  async function handleRetrieveSecretBlob(storeId: string, secret_name: string) {
     // call retrieveSecretBlob then handle the promise that resolves with the retrieved value
     // update state: set retrievedValue
-    await retrieveSecretBlob(nillionClient, store_id, secret_name).then(setRetrievedValue);
+    await retrieveSecretBlob(nillionClient, storeId, secret_name).then(setRetrievedValue);
   }
-
-  // reset nillion values
-  const resetNillion = () => {
-    setConnectedToSnap(false);
-    setUserKey(null);
-    setUserId(null);
-    setNillion(null);
-    setNillionClient(null);
-  };
 
   // reset store blob form to store a new secret
   const resetForm = () => {
     setStoreId(null);
     setRetrievedValue(null);
   };
-
-  useEffect(() => {
-    // when wallet is disconnected, reset nillion
-    if (!connectedAddress) {
-      resetNillion();
-    }
-  }, [connectedAddress]);
 
   return (
     <>
@@ -196,7 +139,7 @@ const Home: NextPage = () => {
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            {!connectedToSnap ? (
+            {!userKey ? (
               <NillionOnboarding />
             ) : (
               <div className="flex flex-row justify-between">
