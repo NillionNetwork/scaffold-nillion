@@ -1,32 +1,8 @@
 import { nillionConfig } from "./nillionConfig";
 import * as nillion from "@nillion/client";
 
-interface SmartContractAddresses {
-  blinding_factors_manager: string;
-  payments: string;
-}
-
-interface Wallet {
-  chain_id: number;
-  private_key: string;
-}
-
-interface Signer {
-  wallet: Wallet;
-}
-
-interface PaymentsConfig {
-  rpc_endpoint: string;
-  smart_contract_addresses: SmartContractAddresses;
-  signer: Signer;
-}
-
-export const initializeNillionClient = (
-  userkey: any,
-  nodekey: any,
-  websockets: string[],
-  payments_config: PaymentsConfig,
-): nillion.NillionClient => new nillion.NillionClient(userkey, nodekey, websockets);
+export const initializeNillionClient = (userkey: any, nodekey: any, websockets: string[]): nillion.NillionClient =>
+  new nillion.NillionClient(userkey, nodekey, websockets);
 
 export const getNillionClient = async (userKey: string) => {
   await nillion.default();
@@ -37,14 +13,8 @@ export const getNillionClient = async (userKey: string) => {
     : [`scaffold-eth-${Math.floor(Math.random() * 10000)}`];
   const randomElement = wl[Math.floor(Math.random() * wl.length)];
   const nodeKey = nillion.NodeKey.from_seed(randomElement);
-  console.log(nillionConfig);
 
-  const client = initializeNillionClient(
-    nillionUserKey,
-    nodeKey,
-    nillionConfig.websockets as string[],
-    nillionConfig.payments_config as PaymentsConfig,
-  );
+  const client = initializeNillionClient(nillionUserKey, nodeKey, nillionConfig.websockets as string[]);
   return {
     nillion,
     nillionClient: client,
