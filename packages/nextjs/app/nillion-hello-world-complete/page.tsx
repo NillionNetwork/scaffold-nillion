@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { DirectSecp256k1Wallet } from "@cosmjs/proto-signing";
+import { SigningStargateClient } from "@cosmjs/stargate";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { CopyString } from "~~/components/nillion/CopyString";
@@ -9,6 +11,8 @@ import RetrieveSecretCommand from "~~/components/nillion/RetrieveSecretCommand";
 import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
 import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
+import { nillionConfig } from "~~/utils/nillion/nillionConfig";
+import { createNilChainClient, createNillionWallet } from "~~/utils/nillion/nillionPayments";
 import { retrieveSecretBlob } from "~~/utils/nillion/retrieveSecretBlob";
 import { storeSecretsBlob } from "~~/utils/nillion/storeSecretsBlob";
 
@@ -22,6 +26,19 @@ const Home: NextPage = () => {
   const [storedSecretName, setStoredSecretName] = useState<string>("my_blob");
   const [storeId, setStoreId] = useState<string | null>(null);
   const [retrievedValue, setRetrievedValue] = useState<string | null>(null);
+  const [appWallet, setAppWallet] = useState<DirectSecp256k1Wallet | null>(null);
+  const [nilChainClient, setNilChainClient] = useState<SigningStargateClient | null>(null);
+
+  useEffect(() => {
+    // warning: do not use in prod
+    // creates an app wallet used to pay for any app operations on behalf of the user
+    createNillionWallet(nillionConfig.payments_config.signer.wallet.private_key as string).then(async wallet => {
+      setAppWallet(wallet);
+      await createNilChainClient(wallet).then(nilChainClient => {
+        setNilChainClient(nilChainClient);
+      });
+    });
+  }, []);
 
   // ✅ #1 DONE: complete this function to connect to the MetaMask Snap
   // Once this is done, the "Connect to Snap with Nillion User Key" button will work
@@ -78,6 +95,8 @@ const Home: NextPage = () => {
     await storeSecretsBlob(
       nillion,
       nillionClient,
+      nilChainClient,
+      appWallet,
       [{ name: secretName, value: secretValue }],
       permissionedUserIdForRetrieveSecret ? [permissionedUserIdForRetrieveSecret] : [],
       permissionedUserIdForUpdateSecret ? [permissionedUserIdForUpdateSecret] : [],

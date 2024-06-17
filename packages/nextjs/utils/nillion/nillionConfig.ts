@@ -1,6 +1,6 @@
 export const nillionConfig = {
   websockets: [process.env.NEXT_PUBLIC_NILLION_WEBSOCKETS],
-  cluster_id: process.env.NEXT_PUBLIC_NILLION_CLUSTER_ID,
+  cluster_id: "9e68173f-9c23-4acc-ba81-4f079b639964",
   payments_config: {
     rpc_endpoint: process.env.NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT,
     smart_contract_addresses: {
@@ -16,5 +16,3 @@ export const nillionConfig = {
     },
   },
 };
-
-console.log;

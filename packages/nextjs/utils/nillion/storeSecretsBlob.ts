@@ -1,4 +1,8 @@
 import { nillionConfig } from "./nillionConfig";
+import { pay } from "./nillionPayments";
+import { DirectSecp256k1Wallet } from "@cosmjs/proto-signing";
+import { SigningStargateClient } from "@cosmjs/stargate";
+import type { NillionClient, Operation, PaymentReceipt } from "@nillion/client";
 
 interface JsInput {
   name: string;
@@ -7,7 +11,9 @@ interface JsInput {
 
 export async function storeSecretsBlob(
   nillion: any,
-  nillionClient: any,
+  nillionClient: NillionClient,
+  nilChainClient: SigningStargateClient,
+  appWallet: DirectSecp256k1Wallet,
   secretsToStore: JsInput[],
   usersWithRetrievePermissions: string[] = [],
   usersWithUpdatePermissions: string[] = [],
@@ -29,8 +35,15 @@ export async function storeSecretsBlob(
       secrets.insert(secret.name, newSecret);
     }
 
-    // you cannot compute with SecretBlobs, so they don't need bindings to any programs
-    const empty_blob_bindings = null;
+    console.log(secrets);
+    const receipt = await pay(
+      nillion,
+      nillionClient,
+      nilChainClient,
+      appWallet,
+      nillion.Operation.store_secrets(secrets),
+    );
+    console.log(receipt);
 
     // get user id for user storing the secret
     const user_id = nillionClient.user_id;
@@ -52,10 +65,10 @@ export async function storeSecretsBlob(
 
     // store secrets with permissions
     const store_id = await nillionClient.store_secrets(
-      nillionConfig.cluster_id,
+      nillionConfig.cluster_id as string,
       secrets,
-      empty_blob_bindings,
       permissions,
+      receipt,
     );
     return store_id;
   } catch (error) {
