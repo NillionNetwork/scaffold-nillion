@@ -1,5 +1,5 @@
 import { nillionConfig } from "./nillionConfig";
-import * as nillion from "@nillion/nillion-client-js-browser/nillion_client_js_browser.js";
+import * as nillion from "@nillion/client";
 
 interface SmartContractAddresses {
   blinding_factors_manager: string;
@@ -26,7 +26,7 @@ export const initializeNillionClient = (
   nodekey: any,
   websockets: string[],
   payments_config: PaymentsConfig,
-): nillion.NillionClient => new nillion.NillionClient(userkey, nodekey, websockets, payments_config);
+): nillion.NillionClient => new nillion.NillionClient(userkey, nodekey, websockets);
 
 export const getNillionClient = async (userKey: string) => {
   await nillion.default();
