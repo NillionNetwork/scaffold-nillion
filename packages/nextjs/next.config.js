@@ -1,6 +1,6 @@
 // @ts-check
 
-/** @type {import('next').NextConfig} */
+/** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   typescript: {
@@ -26,12 +26,7 @@ const nextConfig = {
     ];
   },
   async rewrites() {
-    return [
-      {
-        source: "/api/rpc",
-        destination: process.env.NEXT_PUBLIC_NILLION_JSON_RPC || "", // proxy the rpc endpoint to get around cors
-      },
-    ];
+    return [];
   },
 };
 

@@ -1302,12 +1302,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nillion/client@file:/Users/steph/Downloads/nillion-client-0.3.0-release.tgz::locator=%40se-2%2Fnextjs%40workspace%3Apackages%2Fnextjs":
+"@nillion/client@file:nillion.tgz::locator=%40se-2%2Fnextjs%40workspace%3Apackages%2Fnextjs":
   version: 0.3.0
-  resolution: "@nillion/client@file:/Users/steph/Downloads/nillion-client-0.3.0-release.tgz::locator=%40se-2%2Fnextjs%40workspace%3Apackages%2Fnextjs"
+  resolution: "@nillion/client@file:nillion.tgz::locator=%40se-2%2Fnextjs%40workspace%3Apackages%2Fnextjs"
   dependencies:
     protobufjs: ^7.3.2
-  checksum: 3b400c4fc3cb2c8a201af601952150288bd8741b68fd597353ea0f5927036323605d37372840bcc5af9c99a6207901e211c20421ff35f36d5eb95249795c1669
+  checksum: 4d8795be4b88f92f9eccc0c8eff4b51e32d476adbdfdf92fa2fa35999f1026465792d6fca26e1f4eb10ab9d948a641fd0eb8ac116cab2eea9d03dc998a3f3a6b
   languageName: node
   linkType: hard
 
@@ -2090,7 +2090,7 @@ __metadata:
     "@cosmjs/stargate": ^0.32.3
     "@ethersproject/providers": ^5.7.2
     "@heroicons/react": ^2.0.11
-    "@nillion/client": /Users/steph/Downloads/nillion-client-0.3.0-release.tgz
+    "@nillion/client": "file:nillion.tgz"
     "@rainbow-me/rainbowkit": 1.3.5
     "@trivago/prettier-plugin-sort-imports": ^4.1.1
     "@types/node": ^17.0.35

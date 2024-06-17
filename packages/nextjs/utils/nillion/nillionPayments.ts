@@ -86,8 +86,8 @@ export async function createNilChainClient(wallet: DirectSecp256k1Wallet): Promi
     autoGas: true,
   };
   // use rpc url proxy, set up in next.config.js
-  const proxyRpcEndpoint = `${document.location.origin}/api/rpc`;
-  return await SigningStargateClient.connectWithSigner(proxyRpcEndpoint, wallet, options);
+  // const proxyRpcEndpoint = `${document.location.origin}/api/rpc`;
+  return await SigningStargateClient.connectWithSigner(nillionConfig.payments_config.rpc_endpoint, wallet, options);
 }
 
 export async function pay(
@@ -98,11 +98,9 @@ export async function pay(
   operation: Operation,
 ): Promise<PaymentReceipt> {
   console.log("try to get quote", nillionConfig.cluster_id);
-  const op = Operation.update_permissions();
-  // debugger;
-  const info = await client.cluster_information("9e68173f-9c23-4acc-ba81-4f079b639964");
+  const info = await client.cluster_information(nillionConfig.cluster_id);
   console.log("info", info);
-  const quote = await client.request_price_quote("9e68173f-9c23-4acc-ba81-4f079b639964", op);
+  const quote = await client.request_price_quote(nillionConfig.cluster_id, operation);
   console.log("got quote", quote);
 
   const denom = "unil";
