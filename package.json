@@ -40,5 +40,8 @@
     "@types/react-syntax-highlighter": "^15",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3"
+  },
+  "dependencies": {
+    "vercel": "^34.1.10"
   }
 }
