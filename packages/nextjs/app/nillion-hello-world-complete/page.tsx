@@ -16,7 +16,7 @@ import SecretForm from "~~/components/nillion/SecretForm";
 import { Address } from "~~/components/scaffold-eth";
 import { getUserKeyFromSnap } from "~~/utils/nillion/getUserKeyFromSnap";
 import { nillionConfig } from "~~/utils/nillion/nillionConfig";
-import { createNilChainClient, createNillionWallet } from "~~/utils/nillion/nillionPayments";
+import { createNillionWallet } from "~~/utils/nillion/nillionPayments";
 import { retrieveSecretBlob } from "~~/utils/nillion/retrieveSecretBlob";
 import { storeSecretsBlob } from "~~/utils/nillion/storeSecretsBlob";
 

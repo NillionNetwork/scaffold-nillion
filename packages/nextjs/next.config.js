@@ -29,7 +29,7 @@ const nextConfig = {
     return [
       {
         source: "/api/rpc",
-        destination: process.env.NEXT_PUBLIC_NILLION_JSON_RPC || "", // proxy the rpc endpoint to get around cors
+        destination: process.env.NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT || "", // proxy the rpc endpoint to get around cors
       },
     ];
   },

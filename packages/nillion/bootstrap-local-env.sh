@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# set number of node and user keys to be created
+num_node_keys=5
+num_user_keys=5
+
+# set env file to update
+ENV_TO_UPDATE=".env"
+
 NILLION_DEVNET="nillion-devnet"
 NILLION_CLI="nillion"
 NILLION_CLI_COMMAND_USER_KEYGEN="user-key-gen"
@@ -7,7 +14,6 @@ NILLION_CLI_COMMAND_NODE_KEYGEN="node-key-gen"
 
 # kill any other nillion-devnet processes
 pkill -9 -f $NILLION_DEVNET
-pkill -9 -f anvil
 
 for var in NILLION_DEVNET NILLION_CLI; do
   printf "ℹ️ found bin %-18s -> [${!var:?Failed to discover $var}]\n" "$var"
@@ -16,16 +22,14 @@ done
 OUTFILE=$(mktemp);
 PIDFILE=$(mktemp);
 
-"$NILLION_DEVNET" --seed scaffold-nillion >"$OUTFILE" & echo $! >"$PIDFILE";
-NEXTJS_ENV=".env ../nextjs/.env"
-HARDHAT_ENV=".env ../hardhat/.env"
+"$NILLION_DEVNET" >"$OUTFILE" & echo $! >"$PIDFILE";
 echo "--------------------"
-echo "Updating your .env files with nillion-devnet environment info... This may take a minute."
+echo "Updating your ${ENV_TO_UPDATE} files with nillion-devnet environment info... This may take a minute."
 echo "--------------------"
 time_limit=160
 while true; do
     # Use 'wait' to check if the log file contains the string
-    if grep "cluster is running, bootnode is at" "$OUTFILE"; then
+    if grep "environment file written" "$OUTFILE"; then
         break
     fi
 
@@ -40,17 +44,41 @@ done
 echo "ℹ️ Cluster has been STARTED (see $OUTFILE)"
 cat "$OUTFILE"
 
+# Extract the path from the line and store it in NILUP_ENV_DIR
+NILUP_ENV_DIR=$(grep 'environment file written to' "$OUTFILE" | awk -F' to ' '{print $2}')
+
+get_value_from_nillion_env() {
+    # Check if the correct number of arguments are provided
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: get_value_from_nillion_env <file_path> <key>"
+        return 1
+    fi
+
+    # Get the file path and key from the arguments
+    local FILE_PATH=$1
+    local KEY=$2
+
+    # Get the value of the specified key, trimming any whitespace
+    local VALUE=$(grep "^$KEY=" "$FILE_PATH" | cut -d'=' -f2 | xargs)
+
+    # Check if the key was found
+    if [ -z "$VALUE" ]; then
+        echo "Key $KEY not found in $FILE_PATH"
+        return 1
+    fi
+
+    # Output the value
+    echo "$VALUE"
+}
+
 # grep cluster info from nillion-devnet
-CLUSTER_ID=$(grep "cluster id is" "$OUTFILE" | awk '{print $4}');
-WEBSOCKET=$(grep "websocket:" "$OUTFILE" | awk '{print $2}');
-BOOT_MULTIADDR=$(grep "cluster is running, bootnode is at" "$OUTFILE" | awk '{print $7}');
-PAYMENTS_CONFIG_FILE=$(grep "payments configuration written to" "$OUTFILE" | awk '{print $5}');
-WALLET_KEYS_FILE=$(grep "wallet keys written to" "$OUTFILE" | awk '{print $5}');
-PAYMENTS_RPC=$(grep "blockchain_rpc_endpoint:" "$PAYMENTS_CONFIG_FILE" | awk '{print $2}');
-PAYMENTS_CHAIN=$(grep "chain_id:" "$PAYMENTS_CONFIG_FILE" | awk '{print $2}');
-PAYMENTS_SC_ADDR=$(grep "payments_sc_address:" "$PAYMENTS_CONFIG_FILE" | awk '{print $2}');
-PAYMENTS_BF_ADDR=$(grep "blinding_factors_manager_sc_address:" "$PAYMENTS_CONFIG_FILE" | awk '{print $2}');
-WALLET_PRIVATE_KEY=$(tail -n1 "$WALLET_KEYS_FILE")
+CLUSTER_ID=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_CLUSTER_ID")
+BOOT_MULTIADDR=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_BOOTNODE_MULTIADDRESS")
+JSON_RPC=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_JSON_RPC")
+GRPC=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_GRPC")
+WEBSOCKET=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_BOOTNODE_WEBSOCKET")
+WALLET_PRIVATE_KEY=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_PRIVATE_KEY_0")
+PAYMENTS_CHAIN=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_CHAIN_ID")
 
 # update or add an environment variable to one or more files
 update_env() {
@@ -91,26 +119,22 @@ log_file_contents() {
     cat "$file_path"
 }
 
-# set number of node and user keys being created
-num_node_keys=5
-num_user_keys=5
-
-# Generate node keys and add to .env - ex: NEXT_PUBLIC_NILLION_NODEKEY_PATH_PARTY_1
+# Generate node keys and add to .env - ex: NILLION_NODEKEY_PATH_PARTY_1
 for ((i=1; i<=$num_node_keys; i++)); do
     nodekey_file=$(mktemp)
     "$NILLION_CLI" "$NILLION_CLI_COMMAND_NODE_KEYGEN" "$nodekey_file"
     NODEKEY_FILES+=("$nodekey_file")
-    update_env "NEXT_PUBLIC_NILLION_NODEKEY_PATH_PARTY_$i" "$nodekey_file" $NEXTJS_ENV
-    update_env "NEXT_PUBLIC_NILLION_NODEKEY_TEXT_PARTY_$i" "$(log_file_contents $nodekey_file)" $NEXTJS_ENV
+    update_env "NILLION_NODEKEY_PATH_PARTY_$i" "$nodekey_file" $ENV_TO_UPDATE
+    update_env "NILLION_NODEKEY_TEXT_PARTY_$i" "$(log_file_contents $nodekey_file)" $ENV_TO_UPDATE
 done
 
-# Generate user keys and add to .env - ex: NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_1
+# Generate user keys and add to .env - ex: NILLION_USERKEY_PATH_PARTY_1
 for ((i=1; i<=$num_user_keys; i++)); do
     userkey_file=$(mktemp)
     "$NILLION_CLI" "$NILLION_CLI_COMMAND_USER_KEYGEN" "$userkey_file"
     USERKEY_FILES+=("$userkey_file")
-    update_env "NEXT_PUBLIC_NILLION_USERKEY_PATH_PARTY_$i" "$userkey_file" $NEXTJS_ENV
-    update_env "NEXT_PUBLIC_NILLION_USERKEY_TEXT_PARTY_$i" "$(log_file_contents $userkey_file)" $NEXTJS_ENV
+    update_env "NILLION_USERKEY_PATH_PARTY_$i" "$userkey_file" $ENV_TO_UPDATE
+    update_env "NILLION_USERKEY_TEXT_PARTY_$i" "$(log_file_contents $userkey_file)" $ENV_TO_UPDATE
 done
 
 echo "🔑 Node key and user keys have been generated and added to .env"
@@ -118,17 +142,16 @@ echo "🔑 Node key and user keys have been generated and added to .env"
 # Add environment variables to NextJs .env
 update_env "NEXT_PUBLIC_NILLION_WEBSOCKETS" "$WEBSOCKET" $NEXTJS_ENV
 update_env "NEXT_PUBLIC_NILLION_CLUSTER_ID" "$CLUSTER_ID" $NEXTJS_ENV
-update_env "NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT" "$PAYMENTS_RPC" $NEXTJS_ENV
-update_env "NEXT_PUBLIC_NILLION_BLINDING_FACTORS_MANAGER_SC_ADDRESS" "$PAYMENTS_BF_ADDR" $NEXTJS_ENV
-update_env "NEXT_PUBLIC_NILLION_PAYMENTS_SC_ADDRESS" "$PAYMENTS_SC_ADDR" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT" "$JSON_RPC" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_GRPC" "$GRPC" $NEXTJS_ENV
 update_env "NEXT_PUBLIC_NILLION_CHAIN_ID" "$PAYMENTS_CHAIN" $NEXTJS_ENV
 update_env "NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $NEXTJS_ENV
 update_env "NEXT_PUBLIC_NILLION_BOOTNODE_MULTIADDRESS" "$BOOT_MULTIADDR" $NEXTJS_ENV
 
 # Add environment variables to Hardhat .env
-update_env "NILLION_CONFIG_RPC_URL" "$PAYMENTS_RPC" $HARDHAT_ENV
-update_env "NILLION_CONFIG_DEPLOYER_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $HARDHAT_ENV
-update_env "NILLION_CONFIG_CHAIN_ID" "$PAYMENTS_CHAIN" $HARDHAT_ENV
+# update_env "NILLION_CONFIG_RPC_URL" "$JSON_RPC" $HARDHAT_ENV
+# update_env "NILLION_CONFIG_DEPLOYER_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $HARDHAT_ENV
+# update_env "NILLION_CONFIG_CHAIN_ID" "$PAYMENTS_CHAIN" $HARDHAT_ENV
 
 echo "Running at process pid: $(pgrep -f $NILLION_DEVNET)"
 
@@ -147,5 +170,11 @@ echo "-------------------------------------------------------"
 echo "-----------🦆 CONNECTED TO NILLION-DEVNET 🦆-----------"
 echo "-------------------------------------------------------"
 
-echo "ℹ️ Your NextJS and Hardhat .env file configurations were updated with nillion-devnet connection variables: websocket, cluster id, keys, blockchain info"
-echo "💻 The Nillion devnet is still running behind the scenes; to spin down the Nillion devnet at any time, run 'yarn nillion-devnet-stop'"
+echo "ℹ️ Your $ENV_TO_UPDATE file configurations were updated with nillion-devnet connection variables: websocket, cluster id, keys, blockchain info"
+echo "💻 The Nillion devnet is still running behind the scenes; to spin down the Nillion devnet at any time, run 'killall nillion-devnet'"
+
+echo "--------------------"
+echo "💻 Your Nillion local cluster is still running - process pid: $(pgrep -f $NILLION_DEVNET)"
+echo "ℹ️  Updated your .env file configuration variables: bootnode, cluster id, keys, blockchain info"
+
+exit 0
