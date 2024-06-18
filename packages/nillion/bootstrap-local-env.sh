@@ -28,11 +28,7 @@ echo "Updating your ${ENV_TO_UPDATE} files with nillion-devnet environment info.
 echo "--------------------"
 time_limit=160
 while true; do
-<<<<<<< HEAD
-    # Use 'wait' to check if the log file contains the last string output by nillion-devnet
-=======
     # Use 'wait' to check if the log file contains the string
->>>>>>> 407cf4b (add updated bootstrap script)
     if grep "environment file written" "$OUTFILE"; then
         break
     fi
@@ -75,11 +71,6 @@ get_value_from_nillion_env() {
     echo "$VALUE"
 }
 
-<<<<<<< HEAD
-cp "$NILUP_ENV_DIR" .env.nillion.devnet
-
-=======
->>>>>>> 407cf4b (add updated bootstrap script)
 # grep cluster info from nillion-devnet
 CLUSTER_ID=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_CLUSTER_ID")
 BOOT_MULTIADDR=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_BOOTNODE_MULTIADDRESS")
@@ -87,10 +78,7 @@ JSON_RPC=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_JSON_RP
 GRPC=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_GRPC")
 WEBSOCKET=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_BOOTNODE_WEBSOCKET")
 WALLET_PRIVATE_KEY=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_PRIVATE_KEY_0")
-<<<<<<< HEAD
-=======
 PAYMENTS_CHAIN=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_CHAIN_ID")
->>>>>>> 407cf4b (add updated bootstrap script)
 
 # update or add an environment variable to one or more files
 update_env() {
