@@ -28,7 +28,11 @@ echo "Updating your ${ENV_TO_UPDATE} files with nillion-devnet environment info.
 echo "--------------------"
 time_limit=160
 while true; do
+<<<<<<< HEAD
     # Use 'wait' to check if the log file contains the last string output by nillion-devnet
+=======
+    # Use 'wait' to check if the log file contains the string
+>>>>>>> 407cf4b (add updated bootstrap script)
     if grep "environment file written" "$OUTFILE"; then
         break
     fi
@@ -71,8 +75,11 @@ get_value_from_nillion_env() {
     echo "$VALUE"
 }
 
+<<<<<<< HEAD
 cp "$NILUP_ENV_DIR" .env.nillion.devnet
 
+=======
+>>>>>>> 407cf4b (add updated bootstrap script)
 # grep cluster info from nillion-devnet
 CLUSTER_ID=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_CLUSTER_ID")
 BOOT_MULTIADDR=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_BOOTNODE_MULTIADDRESS")
@@ -80,6 +87,10 @@ JSON_RPC=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_JSON_RP
 GRPC=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_GRPC")
 WEBSOCKET=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_BOOTNODE_WEBSOCKET")
 WALLET_PRIVATE_KEY=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_PRIVATE_KEY_0")
+<<<<<<< HEAD
+=======
+PAYMENTS_CHAIN=$(get_value_from_nillion_env "$NILUP_ENV_DIR" "NILLION_NILCHAIN_CHAIN_ID")
+>>>>>>> 407cf4b (add updated bootstrap script)
 
 # update or add an environment variable to one or more files
 update_env() {
@@ -140,14 +151,19 @@ done
 
 echo "🔑 Node key and user keys have been generated and added to .env"
 
-# Add environment variables to .env
-update_env "NILLION_WEBSOCKETS" "$WEBSOCKET" $ENV_TO_UPDATE
-update_env "NILLION_CLUSTER_ID" "$CLUSTER_ID" $ENV_TO_UPDATE
-update_env "NILLION_BOOTNODE_MULTIADDRESS" "$BOOT_MULTIADDR" $ENV_TO_UPDATE
-update_env "NILLION_JSON_RPC" "$JSON_RPC" $ENV_TO_UPDATE
-update_env "NILLION_GRPC" "$GRPC" $ENV_TO_UPDATE
-update_env "NILLION_CHAIN_ID" "nillion-chain-testnet" $ENV_TO_UPDATE
-update_env "NILLION_WALLET_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $ENV_TO_UPDATE
+# Add environment variables to NextJs .env
+update_env "NEXT_PUBLIC_NILLION_WEBSOCKETS" "$WEBSOCKET" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_CLUSTER_ID" "$CLUSTER_ID" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_ENDPOINT" "$JSON_RPC" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_BLOCKCHAIN_RPC_GRPC" "$GRPC" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_CHAIN_ID" "$PAYMENTS_CHAIN" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_WALLET_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $NEXTJS_ENV
+update_env "NEXT_PUBLIC_NILLION_BOOTNODE_MULTIADDRESS" "$BOOT_MULTIADDR" $NEXTJS_ENV
+
+# Add environment variables to Hardhat .env
+update_env "NILLION_CONFIG_RPC_URL" "$JSON_RPC" $HARDHAT_ENV
+update_env "NILLION_CONFIG_DEPLOYER_PRIVATE_KEY" "$WALLET_PRIVATE_KEY" $HARDHAT_ENV
+update_env "NILLION_CONFIG_CHAIN_ID" "$PAYMENTS_CHAIN" $HARDHAT_ENV
 
 echo "Running at process pid: $(pgrep -f $NILLION_DEVNET)"
 
