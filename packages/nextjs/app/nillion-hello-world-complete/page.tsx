@@ -31,6 +31,9 @@ const Home: NextPage = () => {
       initCalled.current = true;
       const [vmClient, chainClient, chainWallet] = await connect();
 
+      const cluster = await vmClient.cluster_information(config.clusterId);
+      console.log("Cluster is", cluster.id);
+
       const secretName = "foo";
       const secrets = new Secrets();
       secrets.insert(secretName, Secret.new_non_zero_unsigned_integer("42"));
@@ -99,17 +102,31 @@ const Home: NextPage = () => {
 
 export default Home;
 
-export const config = {
-  clusterId: "9e68173f-9c23-4acc-ba81-4f079b639964",
-  bootnodes: ["/ip4/127.0.0.1/tcp/54936/ws/p2p/12D3KooWMvw1hEqm7EWSDEyqTb6pNetUVkepahKY6hixuAuMZfJS"],
+interface Config {
+  clusterId: string;
+  bootnodes: string[];
   chain: {
-    endpoint: "http://127.0.0.1:48102",
-    keys: ["9a975f567428d054f2bf3092812e6c42f901ce07d9711bc77ee2cd81101f42c5"],
+    endpoint: string;
+    keys: string[];
+  };
+  vm: {
+    nodeKey: string;
+  };
+}
+
+export const config: Config = {
+  clusterId: process.env.NEXT_PUBLIC_NILLION_CLUSTER_ID!,
+  bootnodes: [process.env.NEXT_PUBLIC_NILLION_BOOTNODE_WEBSOCKET!],
+  chain: {
+    endpoint: process.env.NEXT_PUBLIC_NILLION_NILCHAIN_JSON_RPC!,
+    keys: [process.env.NEXT_PUBLIC_NILLION_NILCHAIN_PRIVATE_KEY_0!],
   },
   vm: {
     nodeKey: "nillion-testnet-seed-1",
   },
 };
+
+console.log(config);
 
 export async function connect(): Promise<[NillionClient, SigningStargateClient, DirectSecp256k1Wallet]> {
   await init();
