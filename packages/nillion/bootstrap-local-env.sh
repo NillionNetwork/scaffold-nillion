@@ -7,7 +7,7 @@ num_user_keys=5
 # set env file to update
 ENV_TO_UPDATE=".env"
 
-NILLION_DEVNET="/Users/tim/projects/NillionNetwork/nillion/feat/js-payments/target/debug/nillion-devnet"
+NILLION_DEVNET="nillion-devnet"
 NILLION_CLI="nillion"
 NILLION_CLI_COMMAND_USER_KEYGEN="user-key-gen"
 NILLION_CLI_COMMAND_NODE_KEYGEN="node-key-gen"
