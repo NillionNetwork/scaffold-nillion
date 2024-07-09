@@ -11,3 +11,8 @@ prime_size = 128
 path = "src/addition_simple.py"
 name = "addition_simple"
 prime_size = 128
+
+[[programs]]
+path = "src/jimmy_multiplication.py"
+name = "jimmy_multiplication"
+prime_size = 128

@@ -1,0 +1,10 @@
+---
+program: jimmy_multiply
+inputs:
+  secret_int1:
+    SecretInteger: "3"
+  secret_int2:
+    SecretInteger: "3"
+expected_outputs:
+  multiplication_result:
+    SecretInteger: "3"

@@ -24,6 +24,10 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/nillion-compute",
   },
   {
+    label: "✖️ Jimmy Multiplication",
+    href: "/jimmy-multiplication",
+  },
+  {
     label: "🎯 Hello World",
     href: "/nillion-hello-world",
   },

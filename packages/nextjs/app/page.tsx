@@ -50,6 +50,9 @@ const Home: NextPage = () => {
             <Link href="/nillion-compute" passHref className="link">
               Nillion Blind Compute
             </Link>{" "}
+            <Link href="/jimmy-multiplication" passHref className="link">
+              Jimmy Multiplication App
+            </Link>{" "}
           </div>
         </div>
 
