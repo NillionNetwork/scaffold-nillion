@@ -44,7 +44,7 @@ const Home: NextPage = () => {
         // dynamically import the nillionClient module using await import("~~/utils/nillion/nillionClient")
         const nillionClientUtil = await import("~~/utils/nillion/nillionClient");
 
-        // asyncronously call the getNillionClient function from the imported nillionClient module with the userKey
+        // asynchronously call the getNillionClient function from the imported nillionClient module with the userKey
         const libraries = await nillionClientUtil.getNillionClient(userKey);
         // update state: set nillion
         setNillion(libraries.nillion);
